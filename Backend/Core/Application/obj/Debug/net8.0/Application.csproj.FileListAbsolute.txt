@@ -1,0 +1,15 @@
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/bin/Debug/net8.0/Application.deps.json
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/bin/Debug/net8.0/Application.dll
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/bin/Debug/net8.0/Application.pdb
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/bin/Debug/net8.0/Domain.dll
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/bin/Debug/net8.0/Domain.pdb
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/Application.csproj.AssemblyReference.cache
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/Application.AssemblyInfoInputs.cache
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/Application.AssemblyInfo.cs
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/Application.csproj.CoreCompileInputs.cache
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/Applicat.44B5EDA2.Up2Date
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/Application.dll
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/refint/Application.dll
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/Application.pdb
+/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Core/Application/obj/Debug/net8.0/ref/Application.dll
