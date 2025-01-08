@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "+pvkjOM34Nl5IpIgxSOkTZxyMB91rrxUrGwI3cHIm4cZ36DVrsWDaCDDd1MNFdfVIc0wvG4FS4nQ3g3gxKHzqA==",
+  "success": true,
+  "projectFilePath": "/Users/rodrigofarias/Code/LAB/INTERVIEW_PROJECTS/STRIDER/Backend/Consumer/Consumer.csproj",
+  "expectedPackageFiles": [
+    "/Users/rodrigofarias/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/Users/rodrigofarias/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/rodrigofarias/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "/Users/rodrigofarias/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "/Users/rodrigofarias/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "/Users/rodrigofarias/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.4.0/swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}
