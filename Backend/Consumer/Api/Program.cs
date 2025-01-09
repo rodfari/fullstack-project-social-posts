@@ -3,6 +3,17 @@ using Infrastructure.Persistence.pgSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var FrontEndCorsName = "FrontEndCors"; 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(FrontEndCorsName,
+        policy => policy.WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+    );
+});
 //Add services to the container.
 
 builder.Services.AddControllers();
@@ -24,7 +35,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-
+app.UseCors(FrontEndCorsName);
 //app.UseAuthorization();
 
 app.MapControllers();

@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.sass";
+import { getPosts } from "./services/api-services";
+import Content from "./components/UI/content/Content";
+import Modal from "./components/Modal";
+import { ModalContext } from "./context/ModalContext";
+import Sidebar from "./components/UI/Sidebar";
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [modal, setModal] = useState(false);
+  const toggleModal = () => {
+      setModal((prev) => (prev ? false : true));
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ModalContext.Provider value={{ toggleModal }}>
+        <div className="container">
+          <Sidebar />
+          <Content />
+        </div>
+        { modal && <Modal />}
+      </ModalContext.Provider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
