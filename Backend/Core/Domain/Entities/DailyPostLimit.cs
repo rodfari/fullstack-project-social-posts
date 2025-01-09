@@ -1,11 +1,8 @@
-namespace Backend.Core.Domain;
+namespace Core.Domain.Entities;
 
-public class DailyPostLimit
+public class DailyPostLimit: BaseEntity
 {
-    public int UserId { get; set; }
-    public DateTime PostDate { get; set; }
     public int PostCount { get; set; }
-
     public User User { get; set; }
 }
 

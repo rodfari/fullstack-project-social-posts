@@ -1,6 +1,8 @@
-namespace Backend.Core.Domain.Contracts;
+using Core.Domain.Entities;
 
-public interface IRepository<T>
+namespace Core.Domain.Contracts;
+
+public interface IGenericRepository<T> where T : BaseEntity
 {
     Task<T> GetByIdAsync(int id);
     Task<IEnumerable<T>> GetAllAsync();

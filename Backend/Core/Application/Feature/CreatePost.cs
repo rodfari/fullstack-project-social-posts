@@ -1,17 +1,19 @@
-using Backend.Core.Domain;
-using Backend.Core.Domain.Contracts;
-using Core.Application.Dtos.Requests;
+
+using Core.Application.Requests;
+using Core.Domain.Contracts;
+using Core.Domain.Entities;
+using Domain.Contracts;
 
 namespace Backend.Core.Application.UseCases;
 
 public class CreatePostUseCase
 {
-    private readonly IRepository<Post> _postRepository;
-    private readonly IRepository<DailyPostLimit> _dailyPostLimitRepository;
+    private readonly IPostRepository _postRepository;
+    private readonly IGenericRepository<DailyPostLimit> _dailyPostLimitRepository;
 
     public CreatePostUseCase(
-        IRepository<Post> postRepository,
-        IRepository<DailyPostLimit> dailyPostLimitRepository)
+        IPostRepository postRepository,
+        IGenericRepository<DailyPostLimit> dailyPostLimitRepository)
     {
         _postRepository = postRepository;
         _dailyPostLimitRepository = dailyPostLimitRepository;
@@ -29,7 +31,7 @@ public class CreatePostUseCase
         var today = DateTime.UtcNow.Date;
 
         var dailyLimit = await _dailyPostLimitRepository.FindAsync(
-            d => d.UserId == request.UserId && d.PostDate == today
+            d => d.Id == request.UserId && d.CreatedAt == today
         );
 
         int postsToday = dailyLimit.FirstOrDefault()?.PostCount ?? 0;
@@ -57,8 +59,8 @@ public class CreatePostUseCase
             // Create a new daily limit entry
             var newDailyLimit = new DailyPostLimit
             {
-                UserId = request.UserId,
-                PostDate = today,
+                Id = request.UserId,
+                CreatedAt = today,
                 PostCount = 1
             };
 

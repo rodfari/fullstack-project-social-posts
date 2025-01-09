@@ -1,8 +1,7 @@
-﻿namespace Backend.Core.Domain;
+﻿namespace Core.Domain.Entities;
 
-public class User
+public class User: BaseEntity
 {
-    public int UserId { get; set; }
     public string Username { get; set; }
     
     public ICollection<Post> Posts { get; set; }

@@ -1,12 +1,9 @@
-namespace Backend.Core.Domain;
+namespace Core.Domain.Entities;
 
-public class Post
+public class Post: BaseEntity
 {
-    public int PostId { get; set; }
     public int UserId { get; set; }
     public string Content { get; set; }
-    public DateTime CreatedAt { get; set; }
-
     public User User { get; set; }
     public ICollection<Repost> Reposts { get; set; }
     public bool IsRepost { get; set; }

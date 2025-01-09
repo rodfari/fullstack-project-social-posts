@@ -1,15 +1,16 @@
 using Backend.Core.Application.Dtos.Requests;
-using Backend.Core.Domain;
-using Backend.Core.Domain.Contracts;
+using Core.Domain.Contracts;
+using Core.Domain.Entities;
+using Domain.Contracts;
 
 namespace Backend.Core.Application.UseCases
 {
     public class RepostUseCase
 {
-    private readonly IRepository<Post> _postRepository;
-    private readonly IRepository<DailyPostLimit> _dailyPostLimitRepository;
+    private readonly IPostRepository _postRepository;
+    private readonly IDailyPostLimitRepository _dailyPostLimitRepository;
 
-    public RepostUseCase(IRepository<Post> postRepository, IRepository<DailyPostLimit> dailyPostLimitRepository)
+    public RepostUseCase(IPostRepository postRepository, IDailyPostLimitRepository dailyPostLimitRepository)
     {
         _postRepository = postRepository;
         _dailyPostLimitRepository = dailyPostLimitRepository;
@@ -20,7 +21,7 @@ namespace Backend.Core.Application.UseCases
         // Check the daily post limit
         var today = DateTime.UtcNow.Date;
         var dailyLimit = await _dailyPostLimitRepository.FindAsync(
-            d => d.UserId == request.UserId && d.PostDate == today
+            d => d.Id == request.UserId && d.CreatedAt == today
         );
         int postsToday = dailyLimit.FirstOrDefault()?.PostCount ?? 0;
 
@@ -44,7 +45,7 @@ namespace Backend.Core.Application.UseCases
 
         // Check that the user hasn't already reposted the original post
         var existingRepost = await _postRepository.FindAsync(
-            p => p.UserId == request.UserId && p.PostId == request.OriginalPostId
+            p => p.UserId == request.UserId && p.Id == request.OriginalPostId
         );
         if (existingRepost.Any())
         {
@@ -68,8 +69,8 @@ namespace Backend.Core.Application.UseCases
         {
             var newDailyLimit = new DailyPostLimit
             {
-                UserId = request.UserId,
-                PostDate = today,
+                Id = request.UserId,
+                CreatedAt = today,
                 PostCount = 1
             };
             await _dailyPostLimitRepository.AddAsync(newDailyLimit);
