@@ -14,7 +14,6 @@ function App() {
   };
 
   return (
-    <>
       <ModalContext.Provider value={{ toggleModal }}>
         <div className="container">
           <Sidebar />
@@ -22,7 +21,6 @@ function App() {
         </div>
         { modal && <Modal />}
       </ModalContext.Provider>
-    </>
   );
 }
 
