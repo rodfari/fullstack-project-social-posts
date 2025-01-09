@@ -1,10 +1,10 @@
 
 const Posts = ({ data }) => {
-console.log(data);
+    
   return (
     <>
       {data.map((post) => (
-        <div className="post-box" key={post.id}>
+        <div className="post-box" key={post.postId}>
           <div className="post">
             <div className="post__user">
               <div className="post__user-avatar">R</div>
