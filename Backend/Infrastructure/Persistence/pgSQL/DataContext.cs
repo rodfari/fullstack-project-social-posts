@@ -23,7 +23,7 @@ public class DataContext : DbContext
         foreach (var entry in base.ChangeTracker.Entries<BaseEntity>()
                 .Where(q => q.State == EntityState.Added || q.State == EntityState.Modified))
         {
-            entry.Entity.CreatedAt = DateTime.UtcNow;
+            entry.Entity.UpdatedAt = DateTime.UtcNow;
 
             if (entry.State == EntityState.Added)
             {

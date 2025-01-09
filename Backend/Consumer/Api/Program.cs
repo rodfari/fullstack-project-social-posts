@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddApplicationService();
+var conn = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine(conn);
 builder.Services.AddPostgresPersistence(builder.Configuration.GetConnectionString("DefaultConnection"));
 //Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -21,10 +23,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
-
+DbInitializer.SeedData(app);
 app.Run();

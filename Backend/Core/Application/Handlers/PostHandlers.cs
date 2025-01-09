@@ -3,7 +3,6 @@ using Core.Application.Dtos;
 using Core.Application.Requests;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
-using Domain.Contracts;
 
 namespace Core.Application.Handlers;
 
@@ -20,9 +19,11 @@ public class PostHandlers: IPostHandler
         _dailyPostLimitRepository = dailyPostLimitRepository;
     }
 
-    public Task<PostDto> CreatePost(CreatePostRequest request)
+    public async Task<PostDto> CreatePost(CreatePostRequest request)
     {
-        throw new NotImplementedException();
+        await ExecuteAsync(request);
+        return new PostDto();
+        
     }
 
     public async Task ExecuteAsync(CreatePostRequest request)
@@ -51,43 +52,55 @@ public class PostHandlers: IPostHandler
         var newPost = new Post
         {
             UserId = request.UserId,
-            Content = request.Content,
-            CreatedAt = DateTime.UtcNow,
+            Content = request.Content
         };
 
         await _postRepository.AddAsync(newPost);
 
         // 4. Update or create the DailyPostLimit
-        var userDailyLimit = dailyLimit.FirstOrDefault();
+        //var userDailyLimit = dailyLimit.FirstOrDefault();
 
-        if (userDailyLimit == null)
-        {
-            // Create a new daily limit entry
-            var newDailyLimit = new DailyPostLimit
-            {
-                Id = request.UserId,
-                CreatedAt = today,
-                PostCount = 1
-            };
+        // if (userDailyLimit == null)
+        // {
+        //     // Create a new daily limit entry
+        //     var newDailyLimit = new DailyPostLimit
+        //     {
+        //         Id = request.UserId,
+        //         CreatedAt = today,
+        //         PostCount = 1
+        //     };
 
-            await _dailyPostLimitRepository.AddAsync(newDailyLimit);
-        }
-        else
-        {
-            // Update the existing daily limit entry
-            userDailyLimit.PostCount += 1;
-            await _dailyPostLimitRepository.UpdateAsync(userDailyLimit);
-        }
+        //     await _dailyPostLimitRepository.AddAsync(newDailyLimit);
+        // }
+        // else
+        // {
+        //     // Update the existing daily limit entry
+        //     userDailyLimit.PostCount += 1;
+        //     await _dailyPostLimitRepository.UpdateAsync(userDailyLimit);
+        // }
     }
 
-    public Task<PostDto> GetPost(int id)
+    public async Task<PostDto> GetPost(int id)
     {
-        throw new NotImplementedException();
+        var posts = await _postRepository.GetByIdAsync(id);
+        PostDto postDto = new(){
+            PostId = posts.Id,
+            Content = posts.Content
+        };
+        return postDto;
     }
 
-    public Task<IEnumerable<PostDto>> GetPosts()
+    public async Task<List<PostDto>> GetPosts()
     {
-        throw new NotImplementedException();
+        List<PostDto> postDtos = new();
+        var posts = await _postRepository.GetAllAsync();
+        posts.ForEach(p => postDtos.Add(new PostDto
+        {
+            PostId  = p.Id,
+            Content = p.Content
+        }));
+
+        return postDtos;
     }
 
     

@@ -1,5 +1,4 @@
 using Core.Domain.Contracts;
-using Domain.Contracts;
 using Infrastructure.Persistence.pgSQL.Repository;
 using Infrastructure.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;

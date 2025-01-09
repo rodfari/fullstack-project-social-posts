@@ -16,19 +16,21 @@ public class PostsController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("get-posts")]
+    [HttpGet]
     public async Task<IActionResult> GetPosts()
     {
-        return Ok();
+        var result = await _postHandler.GetPosts();
+        return Ok(result);
     }
 
-    [HttpGet("get-post/{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetPost(int id)
     {
-        return Ok();
+        var result = await _postHandler.GetPost(id);
+        return Ok(result);
     }
 
-    [HttpPost("create-post")]
+    [HttpPost]
     public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
     {
         await _postHandler.CreatePost(request);

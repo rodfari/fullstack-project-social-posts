@@ -27,10 +27,13 @@ public class DbInitializer
 
         var usuarios = new List<User>()
             {
-                new(){ Id = 1, Username = "Rodrigo"},
-                new(){ Id = 2, Username = "Maria"},
-                new(){ Id = 3, Username = "Jeniffer"}
+                new(){  Username = "Rodrigo", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},    
+                new(){  Username = "Maria", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},  
+                new(){  Username = "Jeniffer", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},
             };
+
         dataContext.AddRange(usuarios);
+        dataContext.SaveChanges();
+        Console.WriteLine("Users created");
     }
 }

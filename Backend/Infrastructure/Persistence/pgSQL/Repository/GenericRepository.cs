@@ -1,6 +1,7 @@
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Infrastructure.Persistence.pgSQL;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repository;
 
@@ -39,14 +40,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<List<T>> GetAllAsync()
     {
-        return  _context.Set<T>().AsEnumerable();
+        return await _context.Set<T>().ToListAsync();
     }
 
-    public Task<T> GetByIdAsync(int id)
+    public async Task<T> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Set<T>().FirstOrDefaultAsync(x =>x.Id == id) ?? Activator.CreateInstance<T>();
     }
 
     public Task UpdateAsync(T entity)
