@@ -1,4 +1,4 @@
-namespace Core.Application.Dtos.Requests;
+namespace Core.Application.Requests;
 public class CreatePostRequest
 {
     public int UserId { get; set; }
