@@ -1,29 +1,31 @@
+using Application.Reponses.PostsResponses;
 using Core.Application.Contracts;
 using Core.Application.Dtos;
+using Core.Application.Reponses;
 using Core.Application.Requests;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 
 namespace Core.Application.Handlers;
 
-public class PostHandlers: IPostHandler
+public class PostHandlers : IPostHandler
 {
     private readonly IPostRepository _postRepository;
-    private readonly IGenericRepository<DailyPostLimit> _dailyPostLimitRepository;
+    private readonly IUserRepository _userRepository;
 
     public PostHandlers(
         IPostRepository postRepository,
-        IGenericRepository<DailyPostLimit> dailyPostLimitRepository)
+        IUserRepository userRepository)
     {
         _postRepository = postRepository;
-        _dailyPostLimitRepository = dailyPostLimitRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<PostDto> CreatePost(CreatePostRequest request)
     {
         await ExecuteAsync(request);
         return new PostDto();
-        
+
     }
 
     public async Task ExecuteAsync(CreatePostRequest request)
@@ -37,16 +39,16 @@ public class PostHandlers: IPostHandler
         // 2. Check the daily post limit
         var today = DateTime.UtcNow.Date;
 
-        var dailyLimit = await _dailyPostLimitRepository.FindAsync(
-            d => d.Id == request.UserId && d.CreatedAt == today
-        );
+        // var dailyLimit = await _dailyPostLimitRepository.FindAsync(
+        //     d => d.Id == request.UserId && d.CreatedAt == today
+        // );
 
-        int postsToday = dailyLimit.FirstOrDefault()?.PostCount ?? 0;
+        // int postsToday = dailyLimit.FirstOrDefault()?.PostCount ?? 0;
 
-        if (postsToday >= 5)
-        {
-            throw new InvalidOperationException("Daily post limit of 5 reached.");
-        }
+        // if (postsToday >= 5)
+        // {
+        //     throw new InvalidOperationException("Daily post limit of 5 reached.");
+        // }
 
         // 3. Create the post
         var newPost = new Post
@@ -83,25 +85,49 @@ public class PostHandlers: IPostHandler
     public async Task<PostDto> GetPost(int id)
     {
         var posts = await _postRepository.GetByIdAsync(id);
-        PostDto postDto = new(){
+        PostDto postDto = new()
+        {
             PostId = posts.Id,
             Content = posts.Content
         };
         return postDto;
     }
-
     public async Task<List<PostDto>> GetPosts()
     {
         List<PostDto> postDtos = new();
-        var posts = await _postRepository.GetAllAsync();
+
+        var posts = await _postRepository.GetPostsAndUserAsync();
         posts.ForEach(p => postDtos.Add(new PostDto
         {
-            PostId  = p.Id,
+            PostId = p.Id,
             Content = p.Content
         }));
 
         return postDtos;
     }
 
-    
+    public async Task<ResponseBase<List<GetPostAndUserResponse>>> GetPostsAndUsersAsync()
+    {
+        List<PostDto> postDtos = new();
+
+        var posts = await _postRepository.GetPostsAndUserAsync();
+        List<GetPostAndUserResponse> allPosts = new();
+
+        posts.ForEach(p => allPosts.Add(new GetPostAndUserResponse
+        {
+            PostId = p.Id,
+            Content = p.Content,
+            UserName = p.User.Username,
+            UserId = p.User.Id,
+            CreatedAt = p.CreatedAt
+        }));
+
+        ResponseBase<List<GetPostAndUserResponse>> response = new()
+        {
+            Success = true,
+            Data = allPosts
+        };
+        return response;
+
+    }
 }

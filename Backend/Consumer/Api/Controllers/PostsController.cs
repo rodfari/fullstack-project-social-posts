@@ -19,8 +19,8 @@ public class PostsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPosts()
     {
-        var result = await _postHandler.GetPosts();
-        return Ok(result);
+        var result = await _postHandler.GetPostsAndUsersAsync();
+        return Ok(result.Data);
     }
 
     [HttpGet("{id}")]
