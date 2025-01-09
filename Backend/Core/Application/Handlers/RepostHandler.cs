@@ -1,19 +1,25 @@
-using Backend.Core.Application.Dtos.Requests;
+using Core.Application.Contracts;
+using Core.Application.Dtos;
+using Core.Application.Dtos.Requests;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Domain.Contracts;
 
-namespace Backend.Core.Application.UseCases
-{
-    public class RepostUseCase
+namespace Core.Application.Handlers;
+public class RepostHandler: IRepostHandler
 {
     private readonly IPostRepository _postRepository;
     private readonly IDailyPostLimitRepository _dailyPostLimitRepository;
 
-    public RepostUseCase(IPostRepository postRepository, IDailyPostLimitRepository dailyPostLimitRepository)
+    public RepostHandler(IPostRepository postRepository, IDailyPostLimitRepository dailyPostLimitRepository)
     {
         _postRepository = postRepository;
         _dailyPostLimitRepository = dailyPostLimitRepository;
+    }
+
+    public Task<RepostDto> CreatePost(RepostRequest request)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task ExecuteAsync(RepostRequest request)
@@ -81,6 +87,14 @@ namespace Backend.Core.Application.UseCases
             await _dailyPostLimitRepository.UpdateAsync(userDailyLimit);
         }
     }
-}
 
+    public Task<RepostDto> GetPost(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<RepostDto>> GetPosts()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,4 +1,3 @@
-using Backend.Infrastructure.Persistence.pgSQL;
 using Core.Domain.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +11,10 @@ public class DbInitializer
     {
         using var scope = app.Services.CreateScope();
 
-        SeedData(scope.ServiceProvider.GetService<PgSqlContext>());
+        SeedData(scope.ServiceProvider.GetService<DataContext>());
     }
 
-    private static void SeedData(PgSqlContext dataContext)
+    private static void SeedData(DataContext dataContext)
     {
         dataContext.Database.EnsureCreated();
         dataContext.Database.Migrate();
@@ -28,9 +27,9 @@ public class DbInitializer
 
         var usuarios = new List<User>()
             {
-                new(){ Id = 1,Username = "Rodrigo"},
-                new(){ Id = 2,Username = "Maria"},
-                new(){ Id = 3,Username = "Jeniffer"}
+                new(){ Id = 1, Username = "Rodrigo"},
+                new(){ Id = 2, Username = "Maria"},
+                new(){ Id = 3, Username = "Jeniffer"}
             };
         dataContext.AddRange(usuarios);
     }

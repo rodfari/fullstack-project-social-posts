@@ -1,22 +1,28 @@
-
+using Core.Application.Contracts;
+using Core.Application.Dtos;
 using Core.Application.Requests;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Domain.Contracts;
 
-namespace Backend.Core.Application.UseCases;
+namespace Core.Application.Handlers;
 
-public class CreatePostUseCase
+public class PostHandlers: IPostHandler
 {
     private readonly IPostRepository _postRepository;
     private readonly IGenericRepository<DailyPostLimit> _dailyPostLimitRepository;
 
-    public CreatePostUseCase(
+    public PostHandlers(
         IPostRepository postRepository,
         IGenericRepository<DailyPostLimit> dailyPostLimitRepository)
     {
         _postRepository = postRepository;
         _dailyPostLimitRepository = dailyPostLimitRepository;
+    }
+
+    public Task<PostDto> CreatePost(CreatePostRequest request)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task ExecuteAsync(CreatePostRequest request)
@@ -73,4 +79,16 @@ public class CreatePostUseCase
             await _dailyPostLimitRepository.UpdateAsync(userDailyLimit);
         }
     }
+
+    public Task<PostDto> GetPost(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<PostDto>> GetPosts()
+    {
+        throw new NotImplementedException();
+    }
+
+    
 }

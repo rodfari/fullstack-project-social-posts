@@ -1,7 +1,8 @@
-using Backend.Core.Application.UseCases;
-using Backend.Core.Domain;
-using Backend.Core.Domain.Contracts;
-using Core.Application.Dtos.Requests;
+using Core.Application.Handlers;
+using Core.Application.Requests;
+using Core.Domain.Contracts;
+using Core.Domain.Entities;
+using Domain.Contracts;
 using Moq;
 
 namespace ApplicationTests;
@@ -12,14 +13,14 @@ public class CreatePostUseCaseTests
     public async Task Should_CreatePost_When_ValidRequest()
     {
         // Arrange
-        var postRepositoryMock = new Mock<IRepository<Post>>();
-        var dailyPostLimitRepositoryMock = new Mock<IRepository<DailyPostLimit>>();
+        var postRepositoryMock = new Mock<IPostRepository>();
+        var dailyPostLimitRepositoryMock = new Mock<IDailyPostLimitRepository>();
 
         dailyPostLimitRepositoryMock
             .Setup(repo => repo.FindAsync(It.IsAny<Func<DailyPostLimit, bool>>()))
             .ReturnsAsync(new List<DailyPostLimit>());
 
-        var useCase = new CreatePostUseCase(postRepositoryMock.Object, dailyPostLimitRepositoryMock.Object);
+        var useCase =  new PostHandlers(postRepositoryMock.Object, dailyPostLimitRepositoryMock.Object);
 
         var request = new CreatePostRequest
         {
@@ -40,8 +41,8 @@ public class CreatePostUseCaseTests
     public async Task Should_ThrowInvalidOperationException_When_DailyPostLimitReached()
     {
         // Arrange
-        var postRepositoryMock = new Mock<IRepository<Post>>();
-        var dailyPostLimitRepositoryMock = new Mock<IRepository<DailyPostLimit>>();
+        var postRepositoryMock = new Mock<IPostRepository>();
+        var dailyPostLimitRepositoryMock = new Mock<IDailyPostLimitRepository>();
 
         // Simulate that the user already has 5 posts today
         dailyPostLimitRepositoryMock
@@ -50,13 +51,13 @@ public class CreatePostUseCaseTests
             {
                 new DailyPostLimit
                 {
-                    UserId = 1,
-                    PostDate = DateTime.UtcNow.Date,
+                    Id = 1,
+                    CreatedAt = DateTime.UtcNow.Date,
                     PostCount = 5 // Maximum limit reached
                 }
             });
 
-        var useCase = new CreatePostUseCase(postRepositoryMock.Object, dailyPostLimitRepositoryMock.Object);
+        var useCase = new PostHandlers(postRepositoryMock.Object, dailyPostLimitRepositoryMock.Object);
 
         var request = new CreatePostRequest
         {

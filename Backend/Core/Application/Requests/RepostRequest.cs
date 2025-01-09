@@ -1,4 +1,4 @@
-namespace Backend.Core.Application.Dtos.Requests;
+namespace Core.Application.Dtos.Requests;
 
 public class RepostRequest
 {

@@ -1,4 +1,4 @@
-namespace Application.Dtos;
+namespace Core.Application.Dtos;
 public class PostDto
 {
     public int PostId { get; set; }

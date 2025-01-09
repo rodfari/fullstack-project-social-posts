@@ -1,7 +1,7 @@
-using Application.Dtos;
+using Core.Application.Dtos;
 using Core.Application.Requests;
 
-namespace Backend.Core.Application.Contracts;
+namespace Core.Application.Contracts;
 
 public interface IPostHandler
 {

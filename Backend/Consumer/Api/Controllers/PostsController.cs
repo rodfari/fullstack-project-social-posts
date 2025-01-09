@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Backend.Core.Application.Contracts;
 using Core.Application.Requests;
+using Core.Application.Contracts;
 
 namespace Api.Controllers;
 
@@ -23,7 +19,6 @@ public class PostsController : ControllerBase
     [HttpGet("get-posts")]
     public async Task<IActionResult> GetPosts()
     {
-
         return Ok();
     }
 
