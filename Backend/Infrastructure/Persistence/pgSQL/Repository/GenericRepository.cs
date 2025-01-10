@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Infrastructure.Persistence.pgSQL;
@@ -34,15 +35,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<T>> FindAsync(Func<T, bool> predicate)
-    {
-        return _context.Set<T>().Where(predicate).AsEnumerable();
-
-    }
-
     public async Task<List<T>> GetAllAsync()
     {
         return await _context.Set<T>().AsNoTracking().ToListAsync();
+    }
+
+    public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _context.Set<T>().Where(predicate).AsNoTracking().ToListAsync();
     }
 
     public async Task<T> GetByIdAsync(int id)

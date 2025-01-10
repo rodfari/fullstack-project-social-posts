@@ -1,4 +1,4 @@
-namespace Application.Requests;
+namespace Core.Application.Requests;
 public class CreateRepostRequest
 {
     public int IdOriginalPost { get; set; }

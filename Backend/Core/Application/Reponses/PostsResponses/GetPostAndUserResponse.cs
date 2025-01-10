@@ -10,5 +10,6 @@ public class GetPostAndUserResponse
     public string UserName { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool IsRepost { get; set; }
-    public int? OriginalPostId { get; internal set; }
+    public int? OriginalPostId { get;  set; }
+    public string Author { get;  set; }
 }
