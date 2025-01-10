@@ -13,7 +13,7 @@ const FilterBox = () => {
         <div className="filter-box__sort">
           <select>
             <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
+            <option value="trending">Trending</option>
           </select>
         </div>
         <div className="filter-box__new">

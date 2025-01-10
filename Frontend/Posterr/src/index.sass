@@ -1,8 +1,15 @@
+:root
+    --primary-color: #6e84dd
+    --secondary-color: #a76edd
+    --tertiary-color: #c96edd
+    --quaternary-color: #393939
+    --text-color: #d8d8d8
+    
 *,
 *::before,
 *::after 
   box-sizing: border-box
-
+    
 html
     font-size: 62.5%
 
@@ -11,6 +18,7 @@ body
     margin: 0
     padding: 0
     font-size: 1.6rem
+    background-color: var(--quaternary-color)
 
 
 input
@@ -57,9 +65,13 @@ button, select
         justify-content: space-between
         padding: 1rem
         border-bottom: 1px solid #7d7d7d
-        &__title
-            font-size: 2rem
-        &__close
+    &__title
+        font-size: 2rem
+    &__close
+        cursor: pointer
+        border-radius: 50%
+        padding: 1rem
+        background-color: #f26d6d
 
     &__content
         background-color: #f4f4f4
@@ -78,6 +90,7 @@ button, select
         justify-content: flex-end
         padding: 1rem
         background-color: #f4f4f4
+        
         &__close
             padding: 1rem
             margin: 1rem

@@ -12,12 +12,12 @@ const Posts = ({ data }) => {
             </div>
             <div className="post__content">
               <p>{post.content}</p>
-            </div>
-            <div className="post__date">
               <p>{post.createdAt}</p>
             </div>
+            <div className="post__repost">
+              <button>Repost</button>
+            </div>
           </div>
-          <button>Repost</button>
         </div>
       ))}
     </>

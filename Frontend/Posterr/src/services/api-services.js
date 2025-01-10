@@ -5,7 +5,7 @@ export const createPost = async (content) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify(content),
     });
     const data = await response.json();
     return data;
