@@ -77,6 +77,12 @@ namespace pgSQL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsRepost")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("OriginalPostId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -84,6 +90,8 @@ namespace pgSQL.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OriginalPostId");
 
                     b.HasIndex("UserId");
 
@@ -167,11 +175,17 @@ namespace pgSQL.Migrations
 
             modelBuilder.Entity("Core.Domain.Entities.Post", b =>
                 {
+                    b.HasOne("Core.Domain.Entities.Post", "Repost")
+                        .WithMany()
+                        .HasForeignKey("OriginalPostId");
+
                     b.HasOne("Core.Domain.Entities.User", "User")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Repost");
 
                     b.Navigation("User");
                 });
@@ -185,7 +199,7 @@ namespace pgSQL.Migrations
                         .IsRequired();
 
                     b.HasOne("Core.Domain.Entities.User", "User")
-                        .WithMany("Reposts")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -193,13 +207,6 @@ namespace pgSQL.Migrations
                     b.Navigation("Post");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Core.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Posts");
-
-                    b.Navigation("Reposts");
                 });
 #pragma warning restore 612, 618
         }

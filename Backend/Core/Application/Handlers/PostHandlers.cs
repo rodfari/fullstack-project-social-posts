@@ -1,4 +1,5 @@
 using Application.Reponses.PostsResponses;
+using Application.Requests;
 using Core.Application.Contracts;
 using Core.Application.Dtos;
 using Core.Application.Reponses;
@@ -25,6 +26,30 @@ public class PostHandlers : IPostHandler
     {
         await ExecuteAsync(request);
         return new PostDto();
+
+    }
+
+    public async Task<ResponseBase<PostDto>> CreateRepost(CreateRepostRequest request)
+    {
+        var originalPost = await _postRepository.GetByIdAsync(request.IdOriginalPost);
+        var post = new Post
+        {
+            UserId = request.UserId,
+            Content = originalPost.Content,
+            OriginalPostId = originalPost.Id,
+            IsRepost = true
+        };
+        var respost = await _postRepository.AddAsync(post);
+        return new ResponseBase<PostDto>
+        {
+            Success = true,
+            Data = new PostDto
+            {
+                //Username = respost.User.Username,
+                PostId = respost.Id,
+                Content = respost.Content
+            }
+        };
 
     }
 
@@ -116,10 +141,12 @@ public class PostHandlers : IPostHandler
         posts.ForEach(p => allPosts.Add(new GetPostAndUserResponse
         {
             PostId = p.Id,
+            OriginalPostId = p.OriginalPostId,
             Content = p.Content,
             UserName = p.User.Username,
             UserId = p.User.Id,
-            CreatedAt = p.CreatedAt
+            CreatedAt = p.CreatedAt,
+            IsRepost = p.IsRepost
         }));
 
         ResponseBase<List<GetPostAndUserResponse>> response = new()

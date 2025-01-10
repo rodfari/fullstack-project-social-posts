@@ -13,6 +13,10 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
 
     public async Task<List<Post>> GetPostsAndUserAsync()
     {
-        return await _context.Posts.Include(x =>x.User).OrderByDescending(x => x.CreatedAt).ToListAsync();
+        return await _context.Posts
+            .Include(x =>x.User)
+            // .Include(x => x.Reposts)
+            // .ThenInclude(x => x.Post.Content)
+            .OrderByDescending(x => x.CreatedAt).ToListAsync();
     }
 }

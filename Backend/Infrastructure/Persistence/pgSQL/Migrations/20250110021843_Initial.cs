@@ -61,6 +61,8 @@ namespace pgSQL.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     Content = table.Column<string>(type: "character varying(777)", maxLength: 777, nullable: false),
+                    IsRepost = table.Column<bool>(type: "boolean", nullable: false),
+                    OriginalPostId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -69,6 +71,12 @@ namespace pgSQL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Posts_OriginalPostId",
+                        column: x => x.OriginalPostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Posts_User_UserId",
                         column: x => x.UserId,
@@ -111,6 +119,11 @@ namespace pgSQL.Migrations
                 name: "IX_DailyPostLimit_UserId",
                 table: "DailyPostLimit",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_OriginalPostId",
+                table: "Posts",
+                column: "OriginalPostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",

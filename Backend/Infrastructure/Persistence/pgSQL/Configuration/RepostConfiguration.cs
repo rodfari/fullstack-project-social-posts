@@ -11,6 +11,6 @@ public class RepostConfiguration : IEntityTypeConfiguration<Repost>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.PostId).IsRequired();
         builder.Property(x => x.UserId).IsRequired();
-        builder.HasOne(x => x.Post).WithMany().HasForeignKey(x => x.PostId);
+        
     }
 }

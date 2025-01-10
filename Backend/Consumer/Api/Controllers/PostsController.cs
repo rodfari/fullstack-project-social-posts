@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Application.Requests;
 using Core.Application.Contracts;
+using Application.Requests;
 
 namespace Api.Controllers;
 
@@ -21,6 +22,13 @@ public class PostsController : ControllerBase
     {
         var result = await _postHandler.GetPostsAndUsersAsync();
         return Ok(result.Data);
+    }
+
+    [HttpPost("repost")]
+    public async Task<IActionResult> CreateRepost([FromBody] CreateRepostRequest request)
+    {
+        var result = await _postHandler.CreateRepost(request);
+        return Ok(result);
     }
 
     [HttpGet("{id}")]

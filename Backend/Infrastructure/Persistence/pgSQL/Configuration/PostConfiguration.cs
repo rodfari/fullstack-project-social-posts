@@ -11,7 +11,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Content).IsRequired().HasMaxLength(777);
         builder.Property(p => p.UserId).IsRequired();
-        builder.HasOne(p => p.User).WithMany(u => u.Posts).HasForeignKey(p => p.UserId);
-        // builder.HasOne(p => p.Reposts).WithMany().HasForeignKey(p => p.Reposts);
+        builder.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId);
+        builder.HasOne(p => p.Repost).WithMany().HasForeignKey(r => r.OriginalPostId);
     }
 }
