@@ -14,7 +14,9 @@ public class CreatePostRequestValidation: AbstractValidator<CreatePostRequest>
         RuleFor(x => x.Content)
             .NotEmpty()
             .WithMessage("Post content is required.")
+            .WithErrorCode("CONTENT_REQUIRED")
             .MaximumLength(777)
+            .WithErrorCode("CONTENT_LENGTH")
             .WithMessage("Post content must be between 1 and 777 characters."); 
         
         // 2. Check the daily post limit
@@ -26,6 +28,7 @@ public class CreatePostRequestValidation: AbstractValidator<CreatePostRequest>
                 .GetAllAsync(x => x.UserId == userId && x.CreatedAt.Date == date);
                 return postCount.Count() < 5;
             })
-            .WithMessage("You have reached the daily post limit.");
+            .WithMessage("You have reached the daily post limit.")
+            .WithErrorCode("POST_LIMIT");
     }
 }

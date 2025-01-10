@@ -1,6 +1,6 @@
 using Core.Application.Dtos;
 
-namespace Application.Reponses.PostsResponses;
+namespace Core.Application.Reponses.PostsResponses;
 public class GetPostAndUserResponse
 {
     public int UserId { get; set; }

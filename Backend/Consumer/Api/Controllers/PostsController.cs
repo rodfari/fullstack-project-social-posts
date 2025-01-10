@@ -40,7 +40,7 @@ public class PostsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
     {
-        await _postHandler.CreatePost(request);
+        await _postHandler.CreatePostAsync(request);
         return Ok();
     }
 

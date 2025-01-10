@@ -1,4 +1,3 @@
-using Application.Reponses.PostsResponses;
 using Core.Application.Requests;
 using Core.Application.Validation;
 using Core.Application.Contracts;
@@ -6,30 +5,39 @@ using Core.Application.Dtos;
 using Core.Application.Reponses;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
+using Core.Application.Reponses.PostsResponses;
 
 namespace Core.Application.Handlers;
 
 public class PostHandlers : IPostHandler
 {
     private readonly IPostRepository _postRepository;
-    private readonly IUserRepository _userRepository;
 
     public PostHandlers(
-        IPostRepository postRepository,
-        IUserRepository userRepository)
+        IPostRepository postRepository)
     {
         _postRepository = postRepository;
-        _userRepository = userRepository;
     }
 
-    public async Task<PostDto> CreatePost(CreatePostRequest request)
+    public async Task<ResponseBase<CreatePostResponse>> CreatePostAsync(CreatePostRequest request)
     {
         var validator = new CreatePostRequestValidation(_postRepository);
-        var validation = await validator.ValidateAsync(request);    
+        var validation = await validator.ValidateAsync(request);
 
         if (validation.IsValid == false)
         {
-            throw new ArgumentException(validation.Errors[0].ErrorMessage);
+            List<Error> errors = [];
+
+            validation.Errors.ToList().ForEach(x => errors.Add(new Error
+            {
+                Code = x.ErrorCode,
+                Message = x.ErrorMessage
+            }));
+            return new ResponseBase<CreatePostResponse>
+            {
+                Success = false,
+                Errors = errors
+            };
         }
 
         var newPost = new Post
@@ -39,7 +47,20 @@ public class PostHandlers : IPostHandler
         };
 
         await _postRepository.AddAsync(newPost);
-        return new PostDto();
+        return new ResponseBase<CreatePostResponse>
+        {
+            Success = true,
+            Data = new CreatePostResponse
+            {
+                PostId = newPost.Id,
+                UserId = newPost.UserId,
+                Content = newPost.Content,
+                Author = newPost.Author,
+                IdAuthor = newPost.IdAuthor,
+                IsRepost = newPost.IsRepost,
+                OriginalPostId = newPost.OriginalPostId,
+            }
+        };
     }
 
     public async Task<ResponseBase<PostDto>> CreateRepost(CreateRepostRequest request)
