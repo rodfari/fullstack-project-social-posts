@@ -27,7 +27,7 @@ public class UserHandler: IUserHandler
         };
     }
 
-    public async Task<ResponseBase<List<GetUserResponse>>> GetAllUserByIdAsync()
+    public async Task<ResponseBase<List<GetUserResponse>>> GetAllUserAsync()
     {
         var users =  await _userRepository.GetAllAsync();
         var usersResponse = new List<GetUserResponse>();

@@ -5,5 +5,5 @@ namespace Application.Contracts;
 public interface IUserHandler
 {
     Task<ResponseBase<GetUserResponse>> GetUserByIdAsync(int id);
-    Task<ResponseBase<List<GetUserResponse>>> GetAllUserByIdAsync();
+    Task<ResponseBase<List<GetUserResponse>>> GetAllUserAsync();
 }

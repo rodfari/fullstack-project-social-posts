@@ -1,19 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace Api.Controllers;
+[ApiController]
+[Route("api/[controller]")]
+public class UserController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    private readonly IUserHandler _userHandler;
+    public UserController(IUserHandler userHandler)
     {
-        [HttpGet]
-        public async Task<IActionResult> GetUserById(int id)
-        {
-            return Ok();
-        }
+        _userHandler = userHandler;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllUser()
+    {
+        var response = await _userHandler.GetAllUserAsync();
+        return Ok(response.Data);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserById(int id)
+    {
+        var response = await _userHandler.GetUserByIdAsync(id);
+        return Ok(response.Data);
     }
 }
