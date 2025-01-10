@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Application.Requests;
 using Core.Application.Contracts;
+using Application.Requests;
 
 namespace Api.Controllers;
 
@@ -23,6 +24,27 @@ public class PostsController : ControllerBase
         return Ok(result.Data);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetPost(int id)
+    {
+        var result = await _postHandler.GetPost(id);
+        return Ok(result);
+    }
+
+    [HttpGet("sort/{sort}")]
+    public async Task<IActionResult> GetSortedPosts(string sort)
+    {
+        var result = await _postHandler.GetSortedPosts(sort);
+        return Ok(result);
+    }
+
+    [HttpPost("search")]
+    public async Task<IActionResult> Search([FromBody] SearchPostRequest request)
+    {
+        var result = await _postHandler.SearchKeywordAsync(request.KeyWord);
+        return Ok(result);
+    }
+
     [HttpPost("repost")]
     public async Task<IActionResult> CreateRepost([FromBody] CreateRepostRequest request)
     {
@@ -30,12 +52,6 @@ public class PostsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetPost(int id)
-    {
-        var result = await _postHandler.GetPost(id);
-        return Ok(result);
-    }
 
     [HttpPost]
     public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)

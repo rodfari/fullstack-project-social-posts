@@ -52,8 +52,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             .FirstOrDefaultAsync(x =>x.Id == id) ?? Activator.CreateInstance<T>();
     }
 
-    public Task UpdateAsync(T entity)
+    public async Task<int> SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        return await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(T entity)
+    {
+        _context.Update(entity);
+        await _context.SaveChangesAsync();
     }
 }

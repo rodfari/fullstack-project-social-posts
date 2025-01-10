@@ -66,6 +66,7 @@ public class PostHandlers : IPostHandler
     public async Task<ResponseBase<PostDto>> CreateRepost(CreateRepostRequest request)
     {
         var originalPost = await _postRepository.GetPostsAndUserByPostIdAsync(request.IdOriginalPost);
+        originalPost.RepostCount++;
         var post = new Post
         {
             UserId = request.UserId,
@@ -76,12 +77,12 @@ public class PostHandlers : IPostHandler
             IsRepost = true
         };
         var respost = await _postRepository.AddAsync(post);
+        await _postRepository.UpdateAsync(originalPost);
         return new ResponseBase<PostDto>
         {
             Success = true,
             Data = new PostDto
             {
-                Username = respost.User.Username,
                 PostId = respost.Id,
                 Content = respost.Content
             }
@@ -113,6 +114,35 @@ public class PostHandlers : IPostHandler
         return postDtos;
     }
 
+    public async Task<ResponseBase<List<GetPostAndUserResponse>>> SearchKeywordAsync(string keyword)
+    {
+        List<PostDto> postDtos = new();
+
+        var posts = await _postRepository.GetAllPostsAndUserAsync(x => x.Content.Contains(keyword));
+        List<GetPostAndUserResponse> allPosts = new();
+
+        posts.ForEach(p => allPosts.Add(new GetPostAndUserResponse
+        {
+            PostId = p.Id,
+            OriginalPostId = p.OriginalPostId,
+            Content = p.Content,
+            UserName = p.User.Username,
+            UserId = p.User.Id,
+            CreatedAt = p.CreatedAt,
+            IsRepost = p.IsRepost,
+            Author = p.Author
+        }));
+
+        ResponseBase<List<GetPostAndUserResponse>> response = new()
+        {
+            Success = true,
+            Data = allPosts
+        };
+        return response;
+
+    }
+
+
     public async Task<ResponseBase<List<GetPostAndUserResponse>>> GetPostsAndUsersAsync()
     {
         List<PostDto> postDtos = new();
@@ -139,5 +169,28 @@ public class PostHandlers : IPostHandler
         };
         return response;
 
+    }
+
+    public async Task<ResponseBase<List<GetSortedPostResponse>>> GetSortedPosts(string sort)
+    {
+        var result = await _postRepository.GetSortedPosts(sort);
+
+        return new ResponseBase<List<GetSortedPostResponse>>
+        {
+            Success = true,
+            Data = result.Select(x => new GetSortedPostResponse
+            {
+                UserId = x.UserId,
+                PostId = x.Id,
+                Content = x.Content,
+                CreatedAt = x.CreatedAt,
+                IsRepost = x.IsRepost,
+                OriginalPostId = x.OriginalPostId,
+                Author = x.Author,
+                RepostCount = x.RepostCount
+            }).ToList()
+        };
+
+        
     }
 }
