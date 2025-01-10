@@ -7,9 +7,8 @@ WORKDIR /app
 COPY Backend.sln ./
 COPY Core/Domain/Domain.csproj Core/Domain/
 COPY Core/Application/Application.csproj Core/Application/
-COPY Consumers/Api/Consumer.csproj Consumer/Api/
+COPY Consumer/Api/Consumer.csproj Consumer/Api/
 COPY Infrastructure/Persistence/pgSQL/pgSQL.csproj Infrastructure/Persistence/pgSQL/
-COPY Tests/Core/RFCode.Application.Tests/RFCode.Application.Tests.csproj Tests/Core/RFCode.Application.Tests/
 COPY Tests/ApplicationTests/ApplicationTests.csproj Tests/ApplicationTests/
 
 # Restore dependencies

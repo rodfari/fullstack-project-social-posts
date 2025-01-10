@@ -6,6 +6,7 @@ using Core.Application.Reponses;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Core.Application.Reponses.PostsResponses;
+using System.Linq.Expressions;
 
 namespace Core.Application.Handlers;
 
@@ -114,14 +115,21 @@ public class PostHandlers : IPostHandler
         return postDtos;
     }
 
-    public async Task<ResponseBase<List<GetPostAndUserResponse>>> SearchKeywordAsync(string keyword)
+
+    public async Task<ResponseBase<List<GetAllPostAndUserResponse>>> 
+    GetAllPostsAndUsersAsync( GetAllPostAndUserRequest request)
     {
-        List<PostDto> postDtos = new();
+        Expression<Func<Post, bool>> predicate = null;
+        if(!string.IsNullOrEmpty(request.Keyword)){
+            predicate = x => x.Content.Contains(request.Keyword);
+        }
 
-        var posts = await _postRepository.GetAllPostsAndUserAsync(x => x.Content.Contains(keyword));
-        List<GetPostAndUserResponse> allPosts = new();
 
-        posts.ForEach(p => allPosts.Add(new GetPostAndUserResponse
+        var posts = await _postRepository.GetAllPostsAndUserAsync(predicate, request.Sort);
+
+        List<GetAllPostAndUserResponse> allPosts = new();
+
+        posts.ForEach(p => allPosts.Add(new GetAllPostAndUserResponse
         {
             PostId = p.Id,
             OriginalPostId = p.OriginalPostId,
@@ -133,36 +141,7 @@ public class PostHandlers : IPostHandler
             Author = p.Author
         }));
 
-        ResponseBase<List<GetPostAndUserResponse>> response = new()
-        {
-            Success = true,
-            Data = allPosts
-        };
-        return response;
-
-    }
-
-
-    public async Task<ResponseBase<List<GetPostAndUserResponse>>> GetPostsAndUsersAsync()
-    {
-        List<PostDto> postDtos = new();
-
-        var posts = await _postRepository.GetAllPostsAndUserAsync();
-        List<GetPostAndUserResponse> allPosts = new();
-
-        posts.ForEach(p => allPosts.Add(new GetPostAndUserResponse
-        {
-            PostId = p.Id,
-            OriginalPostId = p.OriginalPostId,
-            Content = p.Content,
-            UserName = p.User.Username,
-            UserId = p.User.Id,
-            CreatedAt = p.CreatedAt,
-            IsRepost = p.IsRepost,
-            Author = p.Author
-        }));
-
-        ResponseBase<List<GetPostAndUserResponse>> response = new()
+        ResponseBase<List<GetAllPostAndUserResponse>> response = new()
         {
             Success = true,
             Data = allPosts

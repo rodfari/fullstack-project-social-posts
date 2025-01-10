@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Application.Requests;
 using Core.Application.Contracts;
-using Application.Requests;
 
 namespace Api.Controllers;
 
@@ -10,17 +9,21 @@ namespace Api.Controllers;
 public class PostsController : ControllerBase
 {
     public readonly IPostHandler _postHandler;
-    private readonly ILogger<PostsController> _logger;
     public PostsController(IPostHandler postHandler, ILogger<PostsController> logger)
     {
         _postHandler = postHandler;
-        _logger = logger;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetPosts()
+    public async Task<IActionResult> GetPosts([FromQuery] string? keyword, string? sort)
     {
-        var result = await _postHandler.GetPostsAndUsersAsync();
+        var result = await _postHandler.GetAllPostsAndUsersAsync(
+            new GetAllPostAndUserRequest
+            {
+                Keyword = keyword,
+                Sort = sort
+            }
+        );
         return Ok(result.Data);
     }
 
@@ -28,20 +31,6 @@ public class PostsController : ControllerBase
     public async Task<IActionResult> GetPost(int id)
     {
         var result = await _postHandler.GetPost(id);
-        return Ok(result);
-    }
-
-    [HttpGet("sort/{sort}")]
-    public async Task<IActionResult> GetSortedPosts(string sort)
-    {
-        var result = await _postHandler.GetSortedPosts(sort);
-        return Ok(result);
-    }
-
-    [HttpPost("search")]
-    public async Task<IActionResult> Search([FromBody] SearchPostRequest request)
-    {
-        var result = await _postHandler.SearchKeywordAsync(request.KeyWord);
         return Ok(result);
     }
 

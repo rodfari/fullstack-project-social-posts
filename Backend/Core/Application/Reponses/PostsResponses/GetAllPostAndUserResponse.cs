@@ -1,7 +1,7 @@
 using Core.Application.Dtos;
 
 namespace Core.Application.Reponses.PostsResponses;
-public class GetPostAndUserResponse
+public class GetAllPostAndUserResponse
 {
     public int UserId { get; set; }
     public int PostId { get; set; }

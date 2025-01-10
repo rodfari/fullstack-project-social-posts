@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
-      - rfcode-network
+      - posterr-network
   
   webapi:
     build:
@@ -35,7 +35,7 @@ services:
 
   frontend:
     build:
-      context: ./Frontend
+      context: ./Frontend/Posterr
       dockerfile: Dockerfile
     ports:
       - "3000:3000"

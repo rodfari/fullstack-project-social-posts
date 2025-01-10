@@ -2,17 +2,22 @@ import { useEffect, useState, useContext } from "react";
 import FilterBox from "./FilterBox";
 import  Posts  from "./Posts";
 import { getPosts } from "../../../services/api-services";
-import { ModalContext } from "../../../context/ModalContext";
+import { AppContext } from "../../../context/AppContext";
 
 const Content = () => {
-  const modalContext = useContext(ModalContext);
+  const appCtx = useContext(AppContext);
   const [posts, setPosts] = useState([]);
+  
 
   useEffect(() => {
-    getPosts().then((data) => {
+    console.log("SEARCH", appCtx.search);
+    console.log("SORT", appCtx.sort);
+    getPosts(appCtx.search, appCtx.sort).then((data) => {
       setPosts(data);
     });
-  }, [modalContext.updatePost]);
+  }, [appCtx.updatePost, appCtx.search, appCtx.sort]);
+
+
 
   return (
     <>

@@ -1,26 +1,35 @@
 const Posts = ({ data }) => {
-
+  if (!data) {
+    return <p>Loading...</p>;
+  }
+  if (data.length === 0) {
+    return (
+      <div className="no-posts">
+        <p>No posts found</p>
+      </div>
+    );
+  }
   return (
     <>
       {data.map((post) => (
-          <div className="post-box" key={post.postId}>
-            {post.isRepost && <p>Post by: { post.author }</p>}
-            <div className="post">
-              <div className="post__user">
-                <div className="post__user-avatar">
-                  {post.userName.charAt(0).toUpperCase()}
-                </div>
-                <div className="post__user-name">{post.userName}</div>
+        <div className="post-box" key={post.postId}>
+          {post.isRepost && <p>Post by: {post.author}</p>}
+          <div className="post">
+            <div className="post__user">
+              <div className="post__user-avatar">
+                {post.userName.charAt(0).toUpperCase()}
               </div>
-              <div className="post__content">
-                <p>{post.content}</p>
-                <p>{post.createdAt}</p>
-              </div>
-              <div className="post__repost">
-                <button>Repost</button>
-              </div>
+              <div className="post__user-name">{post.userName}</div>
+            </div>
+            <div className="post__content">
+              <p>{post.content}</p>
+              <p>{post.createdAt}</p>
+            </div>
+            <div className="post__repost">
+              <button>Repost</button>
             </div>
           </div>
+        </div>
       ))}
     </>
   );

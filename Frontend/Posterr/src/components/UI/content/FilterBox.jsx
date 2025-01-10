@@ -1,23 +1,33 @@
 import { useContext } from "react";
-import { ModalContext } from "../../../context/ModalContext";
+import { AppContext } from "../../../context/AppContext";
 
 const FilterBox = () => {
-  const modalCtx = useContext(ModalContext);
+  const ctx = useContext(AppContext);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const search = fd.get("search");
+    ctx.setSearch(search);
+  }
+
   return (
     <>
       <div className="filter-box">
         <div className="filter-box__search">
-          <input type="text" placeholder="Search" />
-          <button>Search</button>
+        <form onSubmit={handleSubmit}>
+          <input type="text" placeholder="Search" name="search" />
+          <button type="submit">Search</button>
+        </form>
         </div>
         <div className="filter-box__sort">
-          <select>
+          <select onChange={(e) => ctx.setSort(e.target.value)}>
             <option value="newest">Newest</option>
             <option value="trending">Trending</option>
           </select>
         </div>
         <div className="filter-box__new">
-          <button onClick={ modalCtx.toggleModal }>New Post</button>
+          <button onClick={ ctx.toggleModal }>New Post</button>
         </div>
       </div>
     </>

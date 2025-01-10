@@ -11,21 +11,43 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
     {
 
     }
-
     public async Task<List<Post>> GetAllPostsAndUserAsync()
     {
         return await _context.Posts
             .Include(x => x.User)
-            .OrderByDescending(x => x.CreatedAt).ToListAsync();
+            .OrderByDescending(x => x.CreatedAt)
+            .ToListAsync();
+    }
+
+    public async Task<List<Post>> GetAllPostsAndUserAsync(Expression<Func<Post, bool>> predicate = null, string sort = "desc")
+    {
+        var query = _context.Posts
+            .Include(x => x.User)
+            .OrderByDescending(x => x.CreatedAt)
+            .AsQueryable();
+
+        if(predicate != null)
+        {
+            query = query.Where(predicate);
+        }    
+
+        if (sort == "trending")
+        {
+            query = query.OrderByDescending(x => x.RepostCount);
+        }
+
+        return await query.ToListAsync();
+
     }
 
     public async Task<List<Post>> GetAllPostsAndUserAsync(Expression<Func<Post, bool>> predicate)
     {
         return await _context.Posts
-        .Include(x => x.User)
-            .Where(predicate).ToListAsync();
+            .Include(x => x.User)
+            .Where(predicate)
+            .OrderByDescending(x => x.CreatedAt)
+            .ToListAsync();
     }
-
 
     public async Task<Post> GetPostsAndUserByPostIdAsync(int postId)
     {

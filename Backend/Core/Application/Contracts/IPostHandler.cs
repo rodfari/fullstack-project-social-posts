@@ -7,11 +7,10 @@ namespace Core.Application.Contracts;
 
 public interface IPostHandler
 {
-    Task<ResponseBase<List<GetPostAndUserResponse>>> SearchKeywordAsync(string keyword);
-    Task<ResponseBase<List<GetPostAndUserResponse>>> GetPostsAndUsersAsync();
+    // Task<ResponseBase<List<GetPostAndUserResponse>>> SearchKeywordAsync(string keyword);
+    Task<ResponseBase<List<GetAllPostAndUserResponse>>> GetAllPostsAndUsersAsync(GetAllPostAndUserRequest request);
     Task<ResponseBase<PostDto>> CreateRepost(CreateRepostRequest request);
     Task<ResponseBase<CreatePostResponse>> CreatePostAsync(CreatePostRequest request);
     Task<PostDto> GetPost(int id);
-    Task<List<PostDto>> GetPosts();
     Task<ResponseBase<List<GetSortedPostResponse>>> GetSortedPosts(string sort);
 }

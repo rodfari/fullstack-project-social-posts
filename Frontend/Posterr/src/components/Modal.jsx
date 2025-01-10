@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { ModalContext } from "../context/ModalContext";
+import { AppContext } from "../context/AppContext";
 import { createPost } from "../services/api-services";
 
 const Modal = () => {
-  const ctx = useContext(ModalContext);
+  const ctx = useContext(AppContext);
 
   const [errors, setErrors] = useState([]);
 
