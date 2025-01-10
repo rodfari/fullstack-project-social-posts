@@ -7,20 +7,26 @@ import { ModalContext } from "./context/ModalContext";
 import Sidebar from "./components/UI/Sidebar";
 
 function App() {
-
   const [modal, setModal] = useState(false);
+  const [updatePost, setUpdatePosts] = useState(false);
   const toggleModal = () => {
-      setModal((prev) => (prev ? false : true));
+    setModal((prev) => (prev ? false : true));
   };
 
   return (
-      <ModalContext.Provider value={{ toggleModal }}>
-        <div className="container">
-          <Sidebar />
-          <Content />
-        </div>
-        { modal && <Modal />}
-      </ModalContext.Provider>
+    <ModalContext.Provider
+      value={{
+        toggleModal,
+        setUpdatePost: setUpdatePosts,
+        updatePost
+      }}
+    >
+      <div className="container">
+        <Sidebar />
+        <Content />
+      </div>
+      {modal && <Modal />}
+    </ModalContext.Provider>
   );
 }
 

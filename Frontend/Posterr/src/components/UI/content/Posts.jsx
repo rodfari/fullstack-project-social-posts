@@ -1,8 +1,8 @@
 const Posts = ({ data }) => {
+
   return (
     <>
       {data.map((post) => (
-        <>
           <div className="post-box" key={post.postId}>
             {post.isRepost && <p>Post by: { post.author }</p>}
             <div className="post">
@@ -21,7 +21,6 @@ const Posts = ({ data }) => {
               </div>
             </div>
           </div>
-        </>
       ))}
     </>
   );

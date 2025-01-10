@@ -1,9 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "../context/ModalContext";
 import { createPost } from "../services/api-services";
 
 const Modal = () => {
   const ctx = useContext(ModalContext);
+
+  const [errors, setErrors] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,9 +13,21 @@ const Modal = () => {
     const post = fd.get("post");
     const userId = 2;
 
-    const body = { "userId": userId, "content": post};
+    const body = { userId: userId, content: post };
     createPost(body).then((data) => {
+      console.log(`[SUCCESS]: ${data.success}`);
       console.log(data);
+      if (data.success === true) {
+        ctx.toggleModal((prev) => !prev);
+        ctx.setUpdatePost((prex) => !prex);
+        return;
+      }
+
+      if (data.errors) {
+        console.log("has errors!");
+        setErrors(data.errors);
+      }
+
     });
   };
 
@@ -30,7 +44,18 @@ const Modal = () => {
           <form onSubmit={handleSubmit}>
             <div className="modal__content">
               <label htmlFor="post">Write a post.</label>
-              <textarea placeholder="Write something..." id="post" name="post"></textarea>
+              <textarea
+                placeholder="Write something..."
+                id="post"
+                name="post"
+              ></textarea>
+              { errors.length > 0 && (
+                <div className="modal__errors">
+                  {errors.map((error, index) => (
+                    <p key={index}>{error.message}</p>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="modal__footer">
               <button type="submit">Post</button>

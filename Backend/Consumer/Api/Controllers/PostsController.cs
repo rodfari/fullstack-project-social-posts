@@ -56,8 +56,8 @@ public class PostsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
     {
-        await _postHandler.CreatePostAsync(request);
-        return Ok();
+        var data = await _postHandler.CreatePostAsync(request);
+        return Ok(data);
     }
 
 }

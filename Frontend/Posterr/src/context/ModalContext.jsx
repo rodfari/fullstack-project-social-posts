@@ -2,5 +2,7 @@
 import { createContext } from 'react'
 
 export const ModalContext = createContext({
-    toggleModal: () => {}
+    toggleModal: () => {},
+    setUpdatePost: () => {},
+    updatePost: false
 });
