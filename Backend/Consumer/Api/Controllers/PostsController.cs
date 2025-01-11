@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Core.Application.Requests;
-using Core.Application.Contracts;
+using MediatR;
+using Core.Application.Feature.Posts.Queries;
+using Core.Application.Feature.Posts.Commands.CreatePosts;
+using Core.Application.Reponses;
+using Core.Application.Reponses.PostsResponses;
 
 namespace Api.Controllers;
 
@@ -8,45 +11,43 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class PostsController : ControllerBase
 {
-    public readonly IPostHandler _postHandler;
-    public PostsController(IPostHandler postHandler, ILogger<PostsController> logger)
+    private readonly IMediator _mediator;
+    public PostsController(IMediator mediator)
     {
-        _postHandler = postHandler;
+        _mediator = mediator;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetPosts([FromQuery] string? keyword, string? sort)
     {
-        var result = await _postHandler.GetAllPostsAndUsersAsync(
-            new GetAllPostAndUserRequest
-            {
-                Keyword = keyword,
-                Sort = sort
-            }
-        );
+        var result = await _mediator.Send(new GetAllPostsQuery { Keyword = keyword, Sort = sort });
         return Ok(result.Data);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetPost(int id)
-    {
-        var result = await _postHandler.GetPost(id);
-        return Ok(result);
-    }
+    // [HttpGet("{id}")]
+    // public async Task<IActionResult> GetPost(int id)
+    // {
+    //     var result = await _postHandler.GetPost(id);
+    //     return Ok(result);
+    // }
 
-    [HttpPost("repost")]
-    public async Task<IActionResult> CreateRepost([FromBody] CreateRepostRequest request)
-    {
-        var result = await _postHandler.CreateRepost(request);
-        return Ok(result);
-    }
+    // [HttpPost("repost")]
+    // public async Task<IActionResult> CreateRepost([FromBody] CreateRepostRequest request)
+    // {
+    //     var result = await _postHandler.CreateRepost(request);
+    //     return Ok(result);
+    // }
 
 
     [HttpPost]
-    public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
+    public async Task<IActionResult> CreatePost([FromBody] CreatePostCommand request)
     {
-        var data = await _postHandler.CreatePostAsync(request);
-        return Ok(data);
+        ResponseBase<CreatePostResponse> data = await _mediator.Send(request);
+        
+        if(data.Success)
+            return CreatedAtAction(nameof(GetPosts), data.Data.PostId);
+
+        return BadRequest(data.Errors);
     }
 
 }

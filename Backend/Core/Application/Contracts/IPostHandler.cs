@@ -12,5 +12,4 @@ public interface IPostHandler
     Task<ResponseBase<PostDto>> CreateRepost(CreateRepostRequest request);
     Task<ResponseBase<CreatePostResponse>> CreatePostAsync(CreatePostRequest request);
     Task<PostDto> GetPost(int id);
-    Task<ResponseBase<List<GetSortedPostResponse>>> GetSortedPosts(string sort);
 }

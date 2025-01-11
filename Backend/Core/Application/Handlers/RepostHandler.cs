@@ -8,12 +8,10 @@ namespace Core.Application.Handlers;
 public class RepostHandler: IRepostHandler
 {
     private readonly IRepostRepository _repostRepository;
-    private readonly IDailyPostLimitRepository _dailyPostLimitRepository;
 
-    public RepostHandler(IRepostRepository repostRepository, IDailyPostLimitRepository dailyPostLimitRepository)
+    public RepostHandler(IRepostRepository repostRepository)
     {
         _repostRepository = repostRepository;
-        _dailyPostLimitRepository = dailyPostLimitRepository;
     }
 
     public async Task<RepostDto> CreateRepost(RepostRequest request)

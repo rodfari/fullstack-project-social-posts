@@ -18,7 +18,6 @@ public static class PostgresRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IRepostRepository, RepostRepository>();
-        services.AddScoped<IDailyPostLimitRepository, DailyPostLimitRepository>();
 
         return services;
     }

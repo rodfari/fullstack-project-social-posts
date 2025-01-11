@@ -23,6 +23,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
     {
         var query = _context.Posts
             .Include(x => x.User)
+            .Include(x => x.Reposts)
             .OrderByDescending(x => x.CreatedAt)
             .AsQueryable();
 
@@ -33,7 +34,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
 
         if (sort == "trending")
         {
-            query = query.OrderByDescending(x => x.RepostCount);
+            query = query.OrderByDescending(x => x.Reposts.Count());
         }
 
         return await query.ToListAsync();
@@ -49,25 +50,15 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
             .ToListAsync();
     }
 
-    public async Task<Post> GetPostsAndUserByPostIdAsync(int postId)
+    public Task<Post> GetPostAndUserAsync(Expression<Func<Post, bool>> predicate)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Post> GetPostAndUserByPostIdAsync(int postId)
     {
         return await _context.Posts
             .Include(x => x.User).FirstOrDefaultAsync(x => x.Id == postId);
     }
 
-    public async Task<List<Post>> GetSortedPosts(string sort)
-    {
-        if (sort == "latest")
-        {
-            return await _context.Posts
-                .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync();
-        }
-        return await _context.Posts
-        .Where(x => x.IsRepost == false)
-        .OrderByDescending(x => x.RepostCount)
-        .ThenByDescending(x => x.CreatedAt)
-        .ToListAsync();
-
-    }
 }

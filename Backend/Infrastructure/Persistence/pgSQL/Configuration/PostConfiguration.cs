@@ -1,4 +1,3 @@
-
 using Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,6 +11,6 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.Property(p => p.Content).IsRequired().HasMaxLength(777);
         builder.Property(p => p.UserId).IsRequired();
         builder.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId);
-        builder.HasOne(p => p.Repost).WithMany().HasForeignKey(r => r.OriginalPostId);
+        builder.HasMany(rp => rp.Reposts).WithOne(p => p.Post).HasForeignKey(rp => rp.PostId);
     }
 }
