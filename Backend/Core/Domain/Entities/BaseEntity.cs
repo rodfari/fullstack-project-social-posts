@@ -1,7 +1,7 @@
 
 
 namespace Core.Domain.Entities;
-public class BaseEntity
+public class DefaultEntity
 {
     public int Id { get; set; }
     public DateTime CreatedAt { get; set; }

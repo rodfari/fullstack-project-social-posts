@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: posterr
     ports:
-      - "5432:5432"
+      - "5433:5433"
     container_name: posterr_db
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -16,10 +16,10 @@ services:
   
   webapi:
     build:
-      context: ./Backend
+      context: ./Backend/
       dockerfile: Dockerfile
     ports:
-      - "5500:80"
+      - "5700:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     #  - CONNECTION_STRING=${CONNECTION_STRING}
@@ -51,7 +51,7 @@ volumes:
   postgres-data:
 
 networks:
-  rfcode-network:
+  posterr-network:
     driver: bridge
     
 

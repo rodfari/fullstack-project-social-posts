@@ -1,6 +1,6 @@
 ﻿namespace Core.Domain.Entities;
 
-public class User: BaseEntity
+public class User: DefaultEntity
 {
     public string Username { get; set; }
 

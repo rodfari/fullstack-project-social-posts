@@ -1,6 +1,6 @@
 namespace Core.Domain.Entities;
 
-public class Repost: BaseEntity
+public class Repost: DefaultEntity
 {
     public int UserId { get; set; }
     public User User { get; set; }

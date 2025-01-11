@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repository;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+public class GenericRepository<T> : IGenericRepository<T> where T : DefaultEntity
 {
     protected readonly DataContext _context;
     public GenericRepository(DataContext context)
@@ -52,10 +52,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             .FirstOrDefaultAsync(x =>x.Id == id) ?? Activator.CreateInstance<T>();
     }
 
-    public async Task<int> SaveChangesAsync()
-    {
-        return await _context.SaveChangesAsync();
-    }
+
 
     public async Task UpdateAsync(T entity)
     {

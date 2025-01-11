@@ -19,7 +19,7 @@ public class DataContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        foreach (var entry in base.ChangeTracker.Entries<BaseEntity>()
+        foreach (var entry in base.ChangeTracker.Entries<DefaultEntity>()
                 .Where(q => q.State == EntityState.Added || q.State == EntityState.Modified))
         {
             entry.Entity.UpdatedAt = DateTime.UtcNow;

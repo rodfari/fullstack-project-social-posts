@@ -2,7 +2,7 @@ using System.Net.Security;
 
 namespace Core.Domain.Entities;
 
-public class Post: BaseEntity
+public class Post: DefaultEntity
 {
     public int UserId { get; set; }
     public string Content { get; set; }

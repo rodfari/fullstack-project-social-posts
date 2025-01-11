@@ -3,7 +3,7 @@ using Core.Domain.Entities;
 
 namespace Core.Domain.Contracts;
 
-public interface IGenericRepository<T> where T : BaseEntity
+public interface IGenericRepository<T> where T : DefaultEntity
 {
     Task<T> GetByIdAsync(int id);
     Task<List<T>> GetAllAsync();
@@ -12,5 +12,4 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task UpdateAsync(T entity);
     Task DeleteAsync(int id);
     Task DeleteAsync(T Entity);
-    Task<int> SaveChangesAsync();
 }
