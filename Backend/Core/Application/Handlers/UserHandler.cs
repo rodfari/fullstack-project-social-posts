@@ -1,10 +1,9 @@
-using Application.Contracts;
 using Core.Application.Reponses;
 using Core.Application.Reponses.UserResponses;
 using Core.Domain.Contracts;
 
 namespace Core.Application.Handlers;
-public class UserHandler: IUserHandler
+public class UserHandler
 {
     private readonly IUserRepository _userRepository;
 
@@ -13,7 +12,7 @@ public class UserHandler: IUserHandler
         _userRepository = userRepository;
     }
 
-    public async Task<ResponseBase<GetUserResponse>> GetUserByIdAsync(int id)
+    public async Task<TResponse<GetUserResponse>> GetUserByIdAsync(int id)
     {
         var user =  await _userRepository.GetByIdAsync(id);
         var userResponse = new GetUserResponse()
@@ -21,13 +20,13 @@ public class UserHandler: IUserHandler
             Id = user.Id,
             UserName = user.Username,
         };
-        return new ResponseBase<GetUserResponse>(){
+        return new TResponse<GetUserResponse>(){
             Success = true,
             Data = userResponse
         };
     }
 
-    public async Task<ResponseBase<List<GetUserResponse>>> GetAllUserAsync()
+    public async Task<TResponse<List<GetUserResponse>>> GetAllUserAsync()
     {
         var users =  await _userRepository.GetAllAsync();
         var usersResponse = new List<GetUserResponse>();
@@ -42,7 +41,7 @@ public class UserHandler: IUserHandler
         });
 
         
-        return new ResponseBase<List<GetUserResponse>>(){
+        return new TResponse<List<GetUserResponse>>(){
             Success = true,
             Data = usersResponse
         };

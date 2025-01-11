@@ -7,14 +7,14 @@ using Core.Domain.Entities;
 using MediatR;
 
 namespace Application.Feature.Posts.Queries;
-public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, ResponseBase<List<PostDto>>>
+public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TResponse<List<PostDto>>>
 {
     private readonly IPostRepository _postRepository;
     public GetAllPostsQueryHandler(IPostRepository postRepository)
     {
         _postRepository = postRepository;
     }
-    public async Task<ResponseBase<List<PostDto>>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
+    public async Task<TResponse<List<PostDto>>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
         Expression<Func<Post, bool>> predicate = null;
         if (!string.IsNullOrEmpty(request.Keyword))
@@ -33,7 +33,7 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, Respons
             CreatedAt = p.CreatedAt,
         }));
 
-        ResponseBase<List<PostDto>> response = new()
+        TResponse<List<PostDto>> response = new()
         {
             Success = true,
             Data = allPosts

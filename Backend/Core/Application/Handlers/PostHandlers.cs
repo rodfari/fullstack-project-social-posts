@@ -1,6 +1,5 @@
 using Core.Application.Requests;
 using Core.Application.Validation;
-using Core.Application.Contracts;
 using Core.Application.Dtos;
 using Core.Application.Reponses;
 using Core.Domain.Contracts;
@@ -10,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Core.Application.Handlers;
 
-public class PostHandlers : IPostHandler
+public class PostHandlers 
 {
     private readonly IPostRepository _postRepository;
 
@@ -20,7 +19,7 @@ public class PostHandlers : IPostHandler
         _postRepository = postRepository;
     }
 
-    public async Task<ResponseBase<CreatePostResponse>> CreatePostAsync(CreatePostRequest request)
+    public async Task<TResponse<CreatePostResponse>> CreatePostAsync(CreatePostRequest request)
     {
         var validator = new CreatePostRequestValidation(_postRepository);
         var validation = await validator.ValidateAsync(request);
@@ -34,7 +33,7 @@ public class PostHandlers : IPostHandler
                 Code = x.ErrorCode,
                 Message = x.ErrorMessage
             }));
-            return new ResponseBase<CreatePostResponse>
+            return new TResponse<CreatePostResponse>
             {
                 Success = false,
                 Errors = errors
@@ -48,7 +47,7 @@ public class PostHandlers : IPostHandler
         };
 
         await _postRepository.AddAsync(newPost);
-        return new ResponseBase<CreatePostResponse>
+        return new TResponse<CreatePostResponse>
         {
             Success = true,
             Data = new CreatePostResponse
@@ -62,33 +61,6 @@ public class PostHandlers : IPostHandler
                 // OriginalPostId = newPost.OriginalPostId,
             }
         };
-    }
-
-    public async Task<ResponseBase<PostDto>> CreateRepost(CreateRepostRequest request)
-    {
-        var originalPost = await _postRepository.GetPostAndUserByPostIdAsync(request.IdOriginalPost);
-        // originalPost.RepostCount++;
-        var post = new Post
-        {
-            UserId = request.UserId,
-            Content = originalPost.Content,
-            // OriginalPostId = originalPost.Id,
-            // Author = originalPost.User.Username,
-            // IdAuthor = originalPost.UserId,
-            // IsRepost = true
-        };
-        var respost = await _postRepository.AddAsync(post);
-        await _postRepository.UpdateAsync(originalPost);
-        return new ResponseBase<PostDto>
-        {
-            Success = true,
-            Data = new PostDto
-            {
-                PostId = respost.Id,
-                Content = respost.Content
-            }
-        };
-
     }
 
     public async Task<PostDto> GetPost(int id)
@@ -116,7 +88,7 @@ public class PostHandlers : IPostHandler
     }
 
 
-    public async Task<ResponseBase<List<GetAllPostAndUserResponse>>> 
+    public async Task<TResponse<List<GetAllPostsResponse>>> 
     GetAllPostsAndUsersAsync( GetAllPostAndUserRequest request)
     {
         Expression<Func<Post, bool>> predicate = null;
@@ -127,9 +99,9 @@ public class PostHandlers : IPostHandler
 
         var posts = await _postRepository.GetAllPostsAndUserAsync(predicate, request.Sort);
 
-        List<GetAllPostAndUserResponse> allPosts = new();
+        List<GetAllPostsResponse> allPosts = new();
 
-        posts.ForEach(p => allPosts.Add(new GetAllPostAndUserResponse
+        posts.ForEach(p => allPosts.Add(new GetAllPostsResponse
         {
             PostId = p.Id,
             Content = p.Content,
@@ -138,7 +110,7 @@ public class PostHandlers : IPostHandler
             CreatedAt = p.CreatedAt,
         }));
 
-        ResponseBase<List<GetAllPostAndUserResponse>> response = new()
+        TResponse<List<GetAllPostsResponse>> response = new()
         {
             Success = true,
             Data = allPosts

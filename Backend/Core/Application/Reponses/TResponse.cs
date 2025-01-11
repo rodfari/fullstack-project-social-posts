@@ -1,6 +1,6 @@
 
 namespace Core.Application.Reponses;
-public class ResponseBase<T>
+public class TResponse<T>
 {
     public bool Success { get; set; }
     public T Data { get; set; }

@@ -1,4 +1,4 @@
-using Application.Contracts;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -6,23 +6,24 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IUserHandler _userHandler;
-    public UserController(IUserHandler userHandler)
+    private readonly IMediator _mediator;
+    public UserController(IMediator _mediator)
     {
-        _userHandler = userHandler;
+        _mediator = _mediator;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllUser()
+    public async Task<IActionResult> Get()
     {
-        var response = await _userHandler.GetAllUserAsync();
-        return Ok(response.Data);
+        
+        //TODO - Implement the logic to get all users
+        return Ok();
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var response = await _userHandler.GetUserByIdAsync(id);
-        return Ok(response.Data);
+        //TODO - Implement the logic to get user by id
+        return Ok();
     }
 }

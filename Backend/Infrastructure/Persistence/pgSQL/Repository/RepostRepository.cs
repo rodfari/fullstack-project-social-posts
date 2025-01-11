@@ -9,4 +9,5 @@ public class RepostRepository : GenericRepository<Repost>, IRepostRepository
     public RepostRepository(DataContext context) : base(context)
     {
     }
+
 }

@@ -1,11 +1,10 @@
-using Core.Application.Contracts;
 using Core.Application.Dtos;
 using Core.Application.Dtos.Requests;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 
 namespace Core.Application.Handlers;
-public class RepostHandler: IRepostHandler
+public class RepostHandler
 {
     private readonly IRepostRepository _repostRepository;
 

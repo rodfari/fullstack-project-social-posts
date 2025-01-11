@@ -15,8 +15,6 @@ public class DataContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
     }
-
-
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         foreach (var entry in base.ChangeTracker.Entries<DefaultEntity>()

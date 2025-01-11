@@ -7,10 +7,7 @@ using System.Linq.Expressions;
 namespace Infrastructure.Persistence.pgSQL.Repository;
 public class PostRepository : GenericRepository<Post>, IPostRepository
 {
-    public PostRepository(DataContext context) : base(context)
-    {
-
-    }
+    public PostRepository(DataContext context) : base(context) {}
     public async Task<List<Post>> GetAllPostsAndUserAsync()
     {
         return await _context.Posts
@@ -40,25 +37,4 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         return await query.ToListAsync();
 
     }
-
-    public async Task<List<Post>> GetAllPostsAndUserAsync(Expression<Func<Post, bool>> predicate)
-    {
-        return await _context.Posts
-            .Include(x => x.User)
-            .Where(predicate)
-            .OrderByDescending(x => x.CreatedAt)
-            .ToListAsync();
-    }
-
-    public Task<Post> GetPostAndUserAsync(Expression<Func<Post, bool>> predicate)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<Post> GetPostAndUserByPostIdAsync(int postId)
-    {
-        return await _context.Posts
-            .Include(x => x.User).FirstOrDefaultAsync(x => x.Id == postId);
-    }
-
 }

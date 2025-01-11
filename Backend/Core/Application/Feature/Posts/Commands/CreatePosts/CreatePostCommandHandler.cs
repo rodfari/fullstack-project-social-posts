@@ -5,14 +5,14 @@ using Core.Domain.Entities;
 using MediatR;
 
 namespace Core.Application.Feature.Posts.Commands.CreatePosts;
-public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, ResponseBase<CreatePostResponse>>
+public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResponse<CreatePostResponse>>
 {
     private readonly IPostRepository _postRepository;
     public CreatePostCommandHandler(IPostRepository postRepository)
     {
         _postRepository = postRepository;
     }
-    public async Task<ResponseBase<CreatePostResponse>> 
+    public async Task<TResponse<CreatePostResponse>> 
     Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
         var validator = new CreatePostCommandValidator(_postRepository);
@@ -27,7 +27,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Respo
                 Code = x.ErrorCode,
                 Message = x.ErrorMessage
             }));
-            return new ResponseBase<CreatePostResponse>
+            return new TResponse<CreatePostResponse>
             {
                 Success = false,
                 Errors = errors
@@ -42,7 +42,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Respo
         };
 
         await _postRepository.AddAsync(newPost);
-        return new ResponseBase<CreatePostResponse>
+        return new TResponse<CreatePostResponse>
         {
             Success = true,
             Data = new CreatePostResponse

@@ -3,7 +3,7 @@ using Core.Application.Reponses.PostsResponses;
 using MediatR;
 
 namespace Core.Application.Feature.Posts.Commands.CreatePosts;
-public class CreatePostCommand: IRequest<ResponseBase<CreatePostResponse>>
+public class CreatePostCommand: IRequest<TResponse<CreatePostResponse>>
 {
     public int UserId { get; set; }
     public string Content { get; set; }

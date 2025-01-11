@@ -42,7 +42,7 @@ public class PostsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreatePost([FromBody] CreatePostCommand request)
     {
-        ResponseBase<CreatePostResponse> data = await _mediator.Send(request);
+        TResponse<CreatePostResponse> data = await _mediator.Send(request);
         
         if(data.Success)
             return CreatedAtAction(nameof(GetPosts), data.Data.PostId);
