@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence.pgSQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace pgSQL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250112045453_Initial9")]
+    partial class Initial9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +34,6 @@ namespace pgSQL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasMaxLength(777)
                         .HasColumnType("character varying(777)");
 
@@ -69,8 +71,8 @@ namespace pgSQL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Content")
-                        .HasMaxLength(777)
-                        .HasColumnType("character varying(777)");
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -85,9 +87,6 @@ namespace pgSQL.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<int?>("OriginalPostId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("RepostCount")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")

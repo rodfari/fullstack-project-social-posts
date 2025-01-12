@@ -17,7 +17,7 @@ public class RepostHandler
     {
         Repost repost = new Repost
         {
-            UserId = request.UserId,
+            RepostAuthorId = request.UserId,
             PostId = request.OriginalPostId
         };
         await _repostRepository.AddAsync(repost);

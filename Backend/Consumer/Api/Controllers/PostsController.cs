@@ -31,12 +31,12 @@ public class PostsController : ControllerBase
     //     return Ok(result);
     // }
 
-    // [HttpPost("repost")]
-    // public async Task<IActionResult> CreateRepost([FromBody] CreateRepostRequest request)
-    // {
-    //     var result = await _postHandler.CreateRepost(request);
-    //     return Ok(result);
-    // }
+    [HttpPost("repost")]
+    public async Task<IActionResult> CreateRepost([FromBody] CreatePostCommand request)
+    {
+        var result = await _mediator.Send(request);
+        return Ok(result);
+    }
 
 
     [HttpPost]

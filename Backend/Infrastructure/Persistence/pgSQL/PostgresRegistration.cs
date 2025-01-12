@@ -17,6 +17,7 @@ public static class PostgresRegistration
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
+        services.AddScoped<IPostsRepository, PostsRepository>();
         services.AddScoped<IRepostRepository, RepostRepository>();
 
         return services;

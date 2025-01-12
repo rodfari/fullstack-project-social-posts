@@ -1,31 +1,59 @@
-using Core.Application.Feature.Posts.Commands.CreatePosts;
 using Core.Domain.Contracts;
+using Core.Domain.Enums;
 using FluentValidation;
 
 namespace Core.Application.Feature.Posts.Commands.CreatePosts;
 public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
 {
-    public CreatePostCommandValidator(IPostRepository postRepository)
+    public CreatePostCommandValidator(IPostsRepository postsRepository)
     {
         // 1. Validate the content length
         RuleFor(x => x.Content)
             .NotEmpty()
             .WithMessage("Post content is required.")
-            .WithErrorCode("CONTENT_REQUIRED")
+            .WithErrorCode(Enum.GetName(ErrorCodes.CONTENT_REQUIRED))
             .MaximumLength(777)
-            .WithErrorCode("CONTENT_LENGTH")
-            .WithMessage("Post content must be between 1 and 777 characters."); 
+            .WithErrorCode(Enum.GetName(ErrorCodes.CONTENT_LENGTH))
+            .WithMessage("Post content must be between 1 and 777 characters.")
+            .When(x => !x.IsRepost == true); 
         
         // 2. Check the daily post limit
         var date = DateTime.UtcNow.Date;
         RuleFor(x => x.UserId)
             .MustAsync(async (userId, cancellation) => 
             {
-                var postCount =  await postRepository
+                var postCount =  await postsRepository
                 .GetAllAsync(x => x.UserId == userId && x.CreatedAt.Date == date);
                 return postCount.Count() < 5;
             })
             .WithMessage("You have reached the daily post limit.")
-            .WithErrorCode("POST_LIMIT");
+            .WithErrorCode(Enum.GetName(ErrorCodes.POST_LIMIT));
+
+        // 3. Check if the AuthorId is not empty when reposting
+        RuleFor(x => x.AuthorId)
+            .NotEmpty()
+            .WithMessage("AuthorId is required for reposting.")
+            .WithErrorCode(Enum.GetName(ErrorCodes.AUTHOR_ID_REQUIRED))
+            .When(x => x.IsRepost == true);
+
+        // 4. Check if the OriginalPostId is not empty when reposting
+        RuleFor(x => x.OriginalPostId)
+            .NotEmpty()
+            .WithMessage("OriginalPostId is required for reposting.")
+            .WithErrorCode(Enum.GetName(ErrorCodes.ORIGINAL_POST_ID_REQUIRED))
+            .When(x => x.IsRepost == true);
+
+        //5. Check if the UserId has already reposted the post
+        RuleFor(x => x.UserId)
+            .MustAsync(async (userId, cancellation) => 
+            {
+                var repost = await postsRepository
+                .GetAllAsync(x => x.UserId == userId && x.OriginalPostId == x.OriginalPostId);
+                return repost.Count() == 0;
+            })
+            .WithMessage("You have already reposted this post.")
+            .WithErrorCode(Enum.GetName(ErrorCodes.REPOST_LIMIT))
+            .When(x => x.IsRepost == true);
+
     }
 }

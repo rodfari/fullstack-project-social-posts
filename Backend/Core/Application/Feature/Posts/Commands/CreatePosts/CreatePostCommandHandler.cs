@@ -1,22 +1,28 @@
 using Core.Application.Reponses;
 using Core.Application.Reponses.PostsResponses;
 using Core.Domain.Contracts;
-using Core.Domain.Entities;
 using MediatR;
 
 namespace Core.Application.Feature.Posts.Commands.CreatePosts;
 public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResponse<CreatePostResponse>>
 {
-    private readonly IPostRepository _postRepository;
-    public CreatePostCommandHandler(IPostRepository postRepository)
+    private readonly IPostsRepository _postsRepository;
+    public CreatePostCommandHandler(IPostsRepository postsRepository)
     {
-        _postRepository = postRepository;
+        _postsRepository = postsRepository;
     }
     public async Task<TResponse<CreatePostResponse>> 
     Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
-        var validator = new CreatePostCommandValidator(_postRepository);
+        var validator = new CreatePostCommandValidator(_postsRepository);
         var validation = await validator.ValidateAsync(request);
+
+        if (request.IsRepost && request.OriginalPostId != null)
+        {
+            var originalPost = await _postsRepository.GetByIdAsync(request.OriginalPostId.GetValueOrDefault());
+            originalPost.RepostCount++;
+            await _postsRepository.UpdateAsync(originalPost);
+        }
 
         if (validation.IsValid == false)
         {
@@ -35,13 +41,17 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
         }
 
 
-        var newPost = new Post
+        var newPost = new Domain.Entities.Posts
         {
             UserId = request.UserId,
-            Content = request.Content
+            Content = request.Content,
+            AuthorId = request.AuthorId,
+            IsRepost = request.IsRepost,
+            OriginalPostId = request.OriginalPostId
         };
 
-        await _postRepository.AddAsync(newPost);
+        await _postsRepository.AddAsync(newPost);
+
         return new TResponse<CreatePostResponse>
         {
             Success = true,

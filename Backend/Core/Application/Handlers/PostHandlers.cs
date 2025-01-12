@@ -19,50 +19,6 @@ public class PostHandlers
         _postRepository = postRepository;
     }
 
-    public async Task<TResponse<CreatePostResponse>> CreatePostAsync(CreatePostRequest request)
-    {
-        var validator = new CreatePostRequestValidation(_postRepository);
-        var validation = await validator.ValidateAsync(request);
-
-        if (validation.IsValid == false)
-        {
-            List<Error> errors = [];
-
-            validation.Errors.ToList().ForEach(x => errors.Add(new Error
-            {
-                Code = x.ErrorCode,
-                Message = x.ErrorMessage
-            }));
-            return new TResponse<CreatePostResponse>
-            {
-                Success = false,
-                Errors = errors
-            };
-        }
-
-        var newPost = new Post
-        {
-            UserId = request.UserId,
-            Content = request.Content
-        };
-
-        await _postRepository.AddAsync(newPost);
-        return new TResponse<CreatePostResponse>
-        {
-            Success = true,
-            Data = new CreatePostResponse
-            {
-                PostId = newPost.Id,
-                UserId = newPost.UserId,
-                Content = newPost.Content,
-                // Author = newPost.Author,
-                // IdAuthor = newPost.IdAuthor,
-                // IsRepost = newPost.IsRepost,
-                // OriginalPostId = newPost.OriginalPostId,
-            }
-        };
-    }
-
     public async Task<PostDto> GetPost(int id)
     {
         var posts = await _postRepository.GetByIdAsync(id);
