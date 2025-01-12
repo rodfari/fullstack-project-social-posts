@@ -1,4 +1,3 @@
-
 using Core.Application.Reponses;
 using Core.Application.Reponses.PostsResponses;
 using Core.Domain.Contracts;
@@ -14,7 +13,7 @@ public class GetPostByIdQueryHandler: IRequestHandler<GetPostByIdQuery, TRespons
     }
     public async Task<TResponse<GetPostByIdResponse>> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
     {
-        var post = await _postsRepository.GetByIdAsync(request.Id);
+        var post = await _postsRepository.GetPostAndUserByIdAsync(request.Id);
 
         if (post == null)
         {

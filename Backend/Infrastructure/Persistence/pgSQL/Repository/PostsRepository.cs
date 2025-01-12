@@ -33,6 +33,11 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
             query = query.OrderByDescending(p => p.CreatedAt);
         }
 
-        return await query.ToListAsync();
+        return await query.AsNoTracking().ToListAsync();
+    }
+
+    public async Task<Posts> GetPostAndUserByIdAsync(int id)
+    {
+        return await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == id);
     }
 }
