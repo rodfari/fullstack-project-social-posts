@@ -29,14 +29,18 @@ public class PostsController : ControllerBase
     public async Task<IActionResult> GetPost(int id)
     {
         var result = await _mediator.Send(new GetPostByIdQuery { Id = id });
-        return Ok(result);
+        if(result.Success)
+            return Ok(result.Data);
+
+
+        return NotFound(result.Errors);
     }
 
     [HttpPost("repost")]
     public async Task<IActionResult> CreateRepost([FromBody] CreatePostCommand request)
     {
         var result = await _mediator.Send(request);
-        return Ok(result);
+        return Ok(result.Data);
     }
 
 

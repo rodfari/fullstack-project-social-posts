@@ -1,3 +1,5 @@
+using Application.Feature.Users.GetAllUsers;
+using Application.Feature.Users.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,23 +9,30 @@ namespace Api.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public UserController(IMediator _mediator)
+    public UserController(IMediator mediator)
     {
-        _mediator = _mediator;
+        _mediator = mediator;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         
-        //TODO - Implement the logic to get all users
-        return Ok();
+        var query = new GetAllUsersQuery();
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        //TODO - Implement the logic to get user by id
-        return Ok();
+        var query = new GetUserByIdQuery()
+        {
+            Id = id
+        };
+        
+        var result = await _mediator.Send(query);
+
+        return Ok(result.Data);
     }
 }
