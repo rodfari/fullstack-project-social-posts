@@ -15,7 +15,7 @@ const Content = () => {
     getPosts(appCtx.search, appCtx.sort).then((data) => {
       setPosts(data);
     });
-  }, [appCtx.updatePost, appCtx.search, appCtx.sort]);
+  }, [appCtx.updatePost, appCtx.search, appCtx.sort, appCtx.repost]);
 
 
 

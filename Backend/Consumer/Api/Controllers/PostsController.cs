@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Core.Application.Feature.Posts.Queries;
 using Core.Application.Feature.Posts.Commands.CreatePosts;
-using Core.Application.Reponses;
-using Core.Application.Reponses.PostsResponses;
 using Core.Application.Feature.Posts.Queries.GetPorstById;
 
 namespace Api.Controllers;
@@ -26,33 +24,33 @@ public class PostsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+
     public async Task<IActionResult> GetPost(int id)
     {
         var result = await _mediator.Send(new GetPostByIdQuery { Id = id });
         if(result.Success)
             return Ok(result.Data);
-
-
         return NotFound(result.Errors);
     }
 
-    [HttpPost("repost")]
-    public async Task<IActionResult> CreateRepost([FromBody] CreatePostCommand request)
-    {
-        var result = await _mediator.Send(request);
-        return Ok(result.Data);
-    }
-
-
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreatePost([FromBody] CreatePostCommand request)
     {
-        TResponse<CreatePostResponse> data = await _mediator.Send(request);
-        
-        if(data.Success)
-            return CreatedAtAction(nameof(GetPosts), data.Data.PostId);
+        var response = await _mediator.Send(request);
+        return  Ok(response);
+    }
 
-        return BadRequest(data.Errors);
+    [HttpPost("repost")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateRepost([FromBody] CreatePostCommand request)
+    {
+        var response = await _mediator.Send(request);
+        return Ok(response);
     }
 
 }

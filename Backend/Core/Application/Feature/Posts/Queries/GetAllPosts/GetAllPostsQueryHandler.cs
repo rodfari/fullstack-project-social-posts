@@ -30,10 +30,11 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
         posts.ForEach(p => allPosts.Add(new PostDto
         {
             PostId = p.Id,
-            Content = p.Content,
+            Content = p.Content ?? p.Reposts?.Content,
             CreatedAt = p.CreatedAt,
             IsRepost = p.IsRepost,
             Username = p.User.Username,
+            UserId = p.UserId,
             Author = p.Author?.Username,
 
         }));

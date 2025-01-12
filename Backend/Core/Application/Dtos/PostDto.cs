@@ -9,4 +9,5 @@ public class PostDto
     public DateTime CreatedAt { get; set; }
     public bool IsRepost { get; set; }
     public string? Author { get; set; }
+    public int UserId { get; internal set; }
 }

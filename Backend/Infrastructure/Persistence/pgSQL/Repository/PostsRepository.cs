@@ -13,8 +13,13 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
 
     public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, string sort, bool trending)
     {
-        var query = _context.Posts.Include(p => p.User).AsQueryable();
+        var query = _context.Posts
+            .Include(p => p.User)
+            .Include(p => p.Author).DefaultIfEmpty()
+            .Include(p => p.Reposts).DefaultIfEmpty()
+            .AsQueryable();
 
+        sort = "desc";
         if (predicate != null)
         {
             query = query.Where(predicate);

@@ -11,12 +11,10 @@ const Modal = () => {
     e.preventDefault();
     const fd = new FormData(e.target);
     const post = fd.get("post");
-    const userId = 2;
+    const userId = ctx.user.id;
 
     const body = { userId: userId, content: post };
     createPost(body).then((data) => {
-      console.log(`[SUCCESS]: ${data.success}`);
-      console.log(data);
       if (data.success === true) {
         ctx.toggleModal((prev) => !prev);
         ctx.setUpdatePost((prex) => !prex);
@@ -24,7 +22,6 @@ const Modal = () => {
       }
 
       if (data.errors) {
-        console.log("has errors!");
         setErrors(data.errors);
       }
 

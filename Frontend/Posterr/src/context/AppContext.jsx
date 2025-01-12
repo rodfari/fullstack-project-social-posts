@@ -10,4 +10,9 @@ export const AppContext = createContext({
     search: "",
     setSearch: () => {},
     repost: () => {},
+    setRepost: () => {},
+    user: {},
+    setUser: () => {},
+    currentUser: {},
+    setCurrentUser: () => {},
 });
