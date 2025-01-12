@@ -16,14 +16,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
     {
         var validator = new CreatePostCommandValidator(_postsRepository);
         var validation = await validator.ValidateAsync(request);
-
-        if (request.IsRepost)
-        {
-            var originalPost = await _postsRepository.GetByIdAsync(request.OriginalPostId.GetValueOrDefault());
-            originalPost.RepostCount = originalPost.RepostCount.GetValueOrDefault() + 1;
-            await _postsRepository.UpdateAsync(originalPost);
-        }
-
+        
         if (validation.IsValid == false)
         {
             List<Error> errors = [];
@@ -39,6 +32,16 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
                 Errors = errors
             };
         }
+
+
+        if (request.IsRepost)
+        {
+            var originalPost = await _postsRepository.GetByIdAsync(request.OriginalPostId.GetValueOrDefault());
+            originalPost.RepostCount = originalPost.RepostCount.GetValueOrDefault() + 1;
+            await _postsRepository.UpdateAsync(originalPost);
+        }
+
+
 
 
         var newPost = new Domain.Entities.Posts

@@ -17,9 +17,9 @@ const Posts = ({ data }) => {
           <div className="post">
             <div className="post__user">
               <div className="post__user-avatar">
-                {post.userName.charAt(0).toUpperCase()}
+                {post.username.charAt(0).toUpperCase()}
               </div>
-              <div className="post__user-name">{post.userName}</div>
+              <div className="post__user-name">{post.username}</div>
             </div>
             <div className="post__content">
               <p>{post.content}</p>
