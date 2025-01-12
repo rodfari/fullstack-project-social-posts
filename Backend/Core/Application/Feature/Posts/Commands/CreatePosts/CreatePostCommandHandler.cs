@@ -17,10 +17,10 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
         var validator = new CreatePostCommandValidator(_postsRepository);
         var validation = await validator.ValidateAsync(request);
 
-        if (request.IsRepost && request.OriginalPostId != null)
+        if (request.IsRepost)
         {
             var originalPost = await _postsRepository.GetByIdAsync(request.OriginalPostId.GetValueOrDefault());
-            originalPost.RepostCount++;
+            originalPost.RepostCount = originalPost.RepostCount.GetValueOrDefault() + 1;
             await _postsRepository.UpdateAsync(originalPost);
         }
 

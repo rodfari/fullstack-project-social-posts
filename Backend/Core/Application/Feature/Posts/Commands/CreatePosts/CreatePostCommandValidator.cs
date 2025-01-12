@@ -49,7 +49,7 @@ public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
             {
                 var repost = await postsRepository
                 .GetAllAsync(x => x.UserId == userId && x.OriginalPostId == x.OriginalPostId);
-                return repost.Count() == 0;
+                return repost.Count() <= 5;
             })
             .WithMessage("You have already reposted this post.")
             .WithErrorCode(Enum.GetName(ErrorCodes.REPOST_LIMIT))

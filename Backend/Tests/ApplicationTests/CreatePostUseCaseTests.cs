@@ -1,7 +1,6 @@
 using System.Linq.Expressions;
 using AutoFixture;
 using Core.Application.Handlers;
-using Core.Application.Requests;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Moq;

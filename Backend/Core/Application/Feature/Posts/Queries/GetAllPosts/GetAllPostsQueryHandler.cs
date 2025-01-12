@@ -32,6 +32,10 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
             PostId = p.Id,
             Content = p.Content,
             CreatedAt = p.CreatedAt,
+            IsRepost = p.IsRepost,
+            Username = p.User.Username,
+            Author = p.Author?.Username,
+
         }));
 
         TResponse<List<PostDto>> response = new()
