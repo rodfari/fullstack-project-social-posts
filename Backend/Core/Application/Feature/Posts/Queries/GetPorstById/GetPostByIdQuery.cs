@@ -5,5 +5,5 @@ using MediatR;
 namespace Core.Application.Feature.Posts.Queries.GetPorstById;
 public class GetPostByIdQuery: IRequest<TResponse<GetPostByIdResponse>>
 {
-    public int PostId { get; set; }
+    public int Id { get; set; }
 }

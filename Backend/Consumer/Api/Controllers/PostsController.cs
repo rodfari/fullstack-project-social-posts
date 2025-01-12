@@ -4,6 +4,7 @@ using Core.Application.Feature.Posts.Queries;
 using Core.Application.Feature.Posts.Commands.CreatePosts;
 using Core.Application.Reponses;
 using Core.Application.Reponses.PostsResponses;
+using Core.Application.Feature.Posts.Queries.GetPorstById;
 
 namespace Api.Controllers;
 
@@ -24,12 +25,12 @@ public class PostsController : ControllerBase
         return Ok(result.Data);
     }
 
-    // [HttpGet("{id}")]
-    // public async Task<IActionResult> GetPost(int id)
-    // {
-    //     var result = await _postHandler.GetPost(id);
-    //     return Ok(result);
-    // }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetPost(int id)
+    {
+        var result = await _mediator.Send(new GetPostByIdQuery { Id = id });
+        return Ok(result);
+    }
 
     [HttpPost("repost")]
     public async Task<IActionResult> CreateRepost([FromBody] CreatePostCommand request)

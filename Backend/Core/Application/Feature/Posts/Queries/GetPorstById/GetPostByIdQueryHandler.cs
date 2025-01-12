@@ -14,7 +14,7 @@ public class GetPostByIdQueryHandler: IRequestHandler<GetPostByIdQuery, TRespons
     }
     public async Task<TResponse<GetPostByIdResponse>> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
     {
-        var post = await _postsRepository.GetByIdAsync(request.PostId);
+        var post = await _postsRepository.GetByIdAsync(request.Id);
 
         if (post == null)
         {
