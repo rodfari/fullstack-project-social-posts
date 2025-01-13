@@ -25,6 +25,7 @@ After that, you can run the project using `dotnet run` and start the frontend. Y
 ## Self Critique
 
 If I had more time, I would focus on adding more comprehensive tests to ensure the stability and reliability of the project. Additionally, I would refactor some parts of the code to enhance readability.
+I would improve the frontend architecture and the composition of components.
 
 Regarding scaling, the parts that would likely fail first are the database and the API endpoints. As the number of users and posts increases, the database might become a bottleneck due to the increased load, and the API endpoints might struggle to handle the high number of requests.
 
