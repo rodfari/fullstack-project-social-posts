@@ -19,17 +19,17 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
             .Include(p => p.Reposts).DefaultIfEmpty()
             .AsQueryable();
 
-        sort = "desc";
+        sort = string.IsNullOrEmpty(sort) ? "desc" : sort;
         if (predicate != null)
         {
             query = query.Where(predicate);
         }
-        if(trending)
+        if(sort.Equals("trending"))
         {
             //order by posts with most reposts
             query = query.OrderByDescending(p => p.RepostCount);
         }
-        if (sort == "asc")
+        else if (sort == "asc")
         {
             query = query.OrderBy(p => p.CreatedAt);
         }
@@ -38,7 +38,8 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
             query = query.OrderByDescending(p => p.CreatedAt);
         }
 
-        return await query.AsNoTracking().ToListAsync();
+        return await query.AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Posts> GetPostAndUserByIdAsync(int id)

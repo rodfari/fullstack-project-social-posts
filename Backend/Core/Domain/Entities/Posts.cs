@@ -14,5 +14,5 @@ public class Posts: DefaultEntity
     
     public string? Content { get; set; }
     public bool IsRepost { get; set; }
-    public int? RepostCount { get; set; }
+    public int RepostCount { get; set; }
 }

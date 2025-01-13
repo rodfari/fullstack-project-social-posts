@@ -22,41 +22,6 @@ namespace pgSQL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Core.Domain.Entities.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(777)
-                        .HasColumnType("character varying(777)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Post");
-                });
-
             modelBuilder.Entity("Core.Domain.Entities.Posts", b =>
                 {
                     b.Property<int>("Id")
@@ -107,44 +72,6 @@ namespace pgSQL.Migrations
                     b.ToTable("tb_posts", (string)null);
                 });
 
-            modelBuilder.Entity("Core.Domain.Entities.Repost", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("PostAuthorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RepostAuthorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("RepostAuthorId");
-
-                    b.ToTable("Repost");
-                });
-
             modelBuilder.Entity("Core.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -171,18 +98,7 @@ namespace pgSQL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("Core.Domain.Entities.Post", b =>
-                {
-                    b.HasOne("Core.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                    b.ToTable("tb_users", (string)null);
                 });
 
             modelBuilder.Entity("Core.Domain.Entities.Posts", b =>
@@ -206,30 +122,6 @@ namespace pgSQL.Migrations
                     b.Navigation("Reposts");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Core.Domain.Entities.Repost", b =>
-                {
-                    b.HasOne("Core.Domain.Entities.Post", "Post")
-                        .WithMany("Reposts")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("RepostAuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Core.Domain.Entities.Post", b =>
-                {
-                    b.Navigation("Reposts");
                 });
 #pragma warning restore 612, 618
         }

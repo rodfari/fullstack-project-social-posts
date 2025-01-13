@@ -1,58 +1,50 @@
-version: '3.8'
+version: "3.8"
 services:
-  postgres:
-    image: postgres
+  dbmysql:
+    image: mysql:latest
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: posterr
+      - MYSQL_DATABASE=posterr
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=lima7898
+      - MYSQL_ROOT_PASSWORD=lima7898
     ports:
-      - "5433:5433"
+      - "33070:33070"
+    expose:
+      - "33070"
     container_name: posterr_db
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - posterr-network
-  
-  webapi:
-    build:
-      context: ./Backend/
-      dockerfile: Dockerfile
-    ports:
-      - "5700:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    #  - CONNECTION_STRING=${CONNECTION_STRING}
-    # depends_on:
-    #   - db
+    # volumes:
+    #   - mysql-data-posterr:/var/lib/mysql
     # networks:
-    #   - app-network
-    container_name: posterr_api
-    networks:
-      - posterr-network
-    depends_on:
-      - postgres
+    #   - posterr-network
 
-  frontend:
-    build:
-      context: ./Frontend/Posterr
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    container_name: posterr_frontend
-    networks:
-      - posterr-network
-    depends_on:
-      - postgres
-      - webapi
+  # webapi:
+  #   build:
+  #     context: ./Backend/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5700:80"
+  #   container_name: posterr_api
+  #   networks:
+  #     - posterr-network
+  #   depends_on:
+  #     - dbpostgres
 
+  # frontend:
+  #   build:
+  #     context: ./Frontend/Posterr
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   container_name: posterr_frontend
+  #   networks:
+  #     - posterr-network
+  #   depends_on:
+  #     - dbpostgres
+  #     - webapi
+# volumes:
+#   postgres-data-posterr:
 
-volumes:
-  postgres-data:
-
-networks:
-  posterr-network:
-    driver: bridge
-    
-
+# networks:
+#   posterr-network:
+#     driver: bridge
 

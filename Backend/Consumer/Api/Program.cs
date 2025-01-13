@@ -4,11 +4,11 @@ using Infrastructure.Persistence.pgSQL;
 var builder = WebApplication.CreateBuilder(args);
 
 var FrontEndCorsName = "FrontEndCors"; 
-
+var allowedCors = builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(FrontEndCorsName,
-        policy => policy.WithOrigins("http://localhost:5173")
+        policy => policy.WithOrigins(allowedCors)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddApplicationService();
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine(conn);
+Console.WriteLine("\n\n\n\n\n Connection string: " + conn + "\n\n\n\n\n");
 builder.Services.AddPostgresPersistence(builder.Configuration.GetConnectionString("DefaultConnection"));
 //Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -39,5 +39,13 @@ app.UseCors(FrontEndCorsName);
 //app.UseAuthorization();
 
 app.MapControllers();
-DbInitializer.SeedData(app);
+
+try
+{
+    DbInitializer.SeedData(app);
+}
+catch (Exception e)
+{
+    Console.WriteLine(e);
+}
 app.Run();

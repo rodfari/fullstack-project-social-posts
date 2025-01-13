@@ -54,7 +54,7 @@ public class CreatePostCommandHandlerTests
     {
         // Arrange
         var _postRepositoryMock = new Mock<IPostsRepository>();
-        var postRepositoryMock = new Mock<IPostRepository>();
+        var postRepositoryMock = new Mock<IPostsRepository>();
 
         var fixture = new Fixture();
         fixture.Customize<Posts>(
@@ -94,7 +94,7 @@ public class CreatePostCommandHandlerTests
     public async void Should_Have_Error_When_Content_Is_Empty()
     {
                 var _postRepositoryMock = new Mock<IPostsRepository>();
-        var postRepositoryMock = new Mock<IPostRepository>();
+        var postRepositoryMock = new Mock<IPostsRepository>();
 
         var fixture = new Fixture();
         fixture.Customize<Posts>(

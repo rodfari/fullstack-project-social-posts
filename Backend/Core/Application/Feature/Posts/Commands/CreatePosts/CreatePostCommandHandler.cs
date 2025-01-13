@@ -37,7 +37,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
         if (request.IsRepost)
         {
             var originalPost = await _postsRepository.GetByIdAsync(request.OriginalPostId.GetValueOrDefault());
-            originalPost.RepostCount = originalPost.RepostCount.GetValueOrDefault() + 1;
+            originalPost.RepostCount = originalPost.RepostCount + 1;
             await _postsRepository.UpdateAsync(originalPost);
         }
 

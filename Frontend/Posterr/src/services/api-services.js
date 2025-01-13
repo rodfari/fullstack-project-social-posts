@@ -1,7 +1,7 @@
-const baseUrl = 'http://localhost:5006';
-
+const baseUrl = import.meta.env.VITE_DEVELOPMENT_URL_API  || import.meta.env.VITE_PRODUCTION_URL_API;
+console.log(baseUrl);
 export const createPost = async (content) => {
-    const response = await fetch(`${baseUrl}/api/posts`, {
+    const response = await fetch(`${baseUrl}/posts`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ export const createPost = async (content) => {
 };
 
 export const createRepost = async (content) => {
-    const response = await fetch(`${baseUrl}/api/posts/repost`, {
+    const response = await fetch(`${baseUrl}/posts/repost`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export const createRepost = async (content) => {
 }
 
 export const getPosts = async (keyword, sort) => {
-    let url = `${baseUrl}/api/posts?`;
+    let url = `${baseUrl}/posts?`;
     if(keyword)
         url += `keyword=${keyword}&`;
     if(sort)
@@ -42,7 +42,7 @@ export const getPosts = async (keyword, sort) => {
 
 
 export const searchPost = async (keyword) => {
-    const response = await fetch(`${baseUrl}/api/posts`,{
+    const response = await fetch(`${baseUrl}/posts`,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -55,13 +55,13 @@ export const searchPost = async (keyword) => {
 
 
 export const getUsers = async () => {
-    const response = await fetch(`${baseUrl}/api/user`);
+    const response = await fetch(`${baseUrl}/user`);
     const data = await response.json();
     return data;
 };
 
 export const getUserById = async (id) => {
-    const response = await fetch(`${baseUrl}/api/user/${id}`);
+    const response = await fetch(`${baseUrl}/user/${id}`);
     const data = await response.json();
     return data;
 }

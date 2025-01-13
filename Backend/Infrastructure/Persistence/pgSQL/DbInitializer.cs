@@ -11,13 +11,13 @@ public class DbInitializer
     {
         using var scope = app.Services.CreateScope();
 
-        SeedData(scope.ServiceProvider.GetService<DataContext>());
+        SeedData(scope.ServiceProvider.GetRequiredService<DataContext>());
     }
 
     private static void SeedData(DataContext dataContext)
     {
-        dataContext.Database.EnsureCreated();
-        dataContext.Database.Migrate();
+        // dataContext.Database.EnsureCreated();
+        // dataContext.Database.Migrate();
 
         if (dataContext.User.Any())
         {
@@ -30,6 +30,12 @@ public class DbInitializer
                 new(){  Username = "Rodrigo", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},    
                 new(){  Username = "Maria", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},  
                 new(){  Username = "Jeniffer", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},
+                new(){  Username = "Hector", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},
+                new(){  Username = "Ronney", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},
+                new(){  Username = "Bruna", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},
+                new(){  Username = "Carla", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},
+                new(){  Username = "Jhony", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},
+                new(){  Username = "James", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow, IsDeleted = false},
             };
 
         dataContext.AddRange(usuarios);

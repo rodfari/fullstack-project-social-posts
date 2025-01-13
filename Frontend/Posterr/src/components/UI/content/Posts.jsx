@@ -21,7 +21,7 @@ const Posts = ({ data }) => {
         <div className="post-box" key={post.postId}>
           {post.isRepost && (
             <div className="repost">
-              <span className="repost__badget">This is a repost</span>
+              <span className="repost__badget">repost</span>
             </div>
           )}
           <div className="post">

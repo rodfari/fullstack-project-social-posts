@@ -22,7 +22,7 @@ const FilterBox = () => {
         </div>
         <div className="filter-box__sort">
           <select onChange={(e) => ctx.setSort(e.target.value)}>
-            <option value="newest">Newest</option>
+            <option value="desc">Newest</option>
             <option value="trending">Trending</option>
           </select>
         </div>
