@@ -17,7 +17,6 @@ function App() {
 
 
   useEffect(() => {
-    console.log("currentUser", currentUser);
     getUserById(currentUser ?? 1).then((data) => {
       if (data) {
         const user = JSON.stringify(data); 
@@ -36,7 +35,7 @@ function App() {
   const contextProvide = {
     toggleModal,
     updatePost,
-    setUpdatePost: setUpdatePosts,
+    setUpdatePosts,
     sort,
     setSort,
     search,

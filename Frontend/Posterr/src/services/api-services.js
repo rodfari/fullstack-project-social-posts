@@ -1,5 +1,4 @@
 const baseUrl = import.meta.env.VITE_DEVELOPMENT_URL_API  || import.meta.env.VITE_PRODUCTION_URL_API;
-console.log(baseUrl);
 export const createPost = async (content) => {
     const response = await fetch(`${baseUrl}/posts`, {
         method: 'POST',
@@ -35,7 +34,6 @@ export const getPosts = async (keyword, sort) => {
 
     const response = await fetch(url);
     const status =  response.status;
-    console.log(status);
     const data = await response.json();
     return data;
 };

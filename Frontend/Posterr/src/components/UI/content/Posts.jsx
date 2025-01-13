@@ -1,23 +1,35 @@
-import { useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { AppContext } from "../../../context/AppContext";
 import RepostButton from "../RepostButton";
+import { getPosts } from "../../../services/api-services";
 
-const Posts = ({ data }) => {
+
+const Posts = () => {
+
+  const appCtx = useContext(AppContext);
+  const [posts, setPosts] = useState([]);
+  
+  useEffect(() => {
+    getPosts(appCtx.search, appCtx.sort).then((data) => {
+      setPosts(data);
+    });
+  }, [appCtx.updatePost, appCtx.search, appCtx.sort, appCtx.repost]);
+
+
   const ctx = useContext(AppContext);
-  if (!data) {
+  if (!posts) {
     return <p>Loading...</p>;
   }
-  if (data.length === 0) {
+  if (posts.length === 0) {
     return (
       <div className="no-posts">
         <p>No posts found</p>
       </div>
     );
   }
-  console.log(data);
   return (
     <>
-      {data.map((post) => (
+      {posts.map((post) => (
         <div className="post-box" key={post.postId}>
           {post.isRepost && (
             <div className="repost">
@@ -32,9 +44,9 @@ const Posts = ({ data }) => {
               <div className="post__user-name">{post.username}</div>
             </div>
             <div className="post__content">
-              {post.isRepost && <p>Author: {post.author}</p>}
+              {post.isRepost && <span className="repost-author">Author: {post.author}</span>}
               <p>{post.content}</p>
-              <p>{new Date(post.createdAt).toISOString().split("T")[0]}</p>
+              <p className="post-date">{new Date(post.createdAt).toISOString().split("T")[0]}</p>
             </div>
             {post.userId != ctx.user.id && !post.isRepost && (
               <RepostButton

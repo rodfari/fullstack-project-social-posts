@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 
 const FilterBox = () => {
@@ -23,6 +23,7 @@ const FilterBox = () => {
         <div className="filter-box__sort">
           <select onChange={(e) => ctx.setSort(e.target.value)}>
             <option value="desc">Newest</option>
+            <option value="asc">Oldest</option>
             <option value="trending">Trending</option>
           </select>
         </div>
