@@ -8,7 +8,7 @@ COPY Backend.sln ./
 COPY Core/Domain/Domain.csproj Core/Domain/
 COPY Core/Application/Application.csproj Core/Application/
 COPY Consumer/Api/Consumer.csproj Consumer/Api/
-COPY Infrastructure/Persistence/pgSQL/pgSQL.csproj Infrastructure/Persistence/pgSQL/
+COPY Infrastructure/Persistence/mySQL/mySQL.csproj Infrastructure/Persistence/mySQL/
 COPY Tests/ApplicationTests/ApplicationTests.csproj Tests/ApplicationTests/
 
 # Restore dependencies
@@ -26,8 +26,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
-ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_URLS=http://+:80
+# ENV ASPNETCORE_ENVIRONMENT=Development
+# ENV ASPNETCORE_URLS=http://+:80
 
 EXPOSE 80
 

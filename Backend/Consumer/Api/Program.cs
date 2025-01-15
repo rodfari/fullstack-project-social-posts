@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var FrontEndCorsName = "FrontEndCors"; 
+var FrontEndCorsName = "FrontEndCors";
 var allowedCors = builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
 builder.Services.AddCors(options =>
 {
@@ -40,23 +40,35 @@ app.UseCors(FrontEndCorsName);
 //app.UseAuthorization();
 
 app.MapControllers();
-
-for(int i = 0; i < 3; i++)
+if (app.Environment.IsProduction())
 {
-    try
+
+    for (int i = 0; i < 3; i++)
     {
-        var scope = app.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<DataContext>();
-        db.Database.Migrate();
-        if(!db.User.Any())
-            GetUsers.SeedUsers();
-        break;
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e);
-        Console.WriteLine("waitint for the databade to start...");
-        Thread.Sleep(3000);
+        try
+        {
+            var scope = app.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+            db.Database.Migrate();
+            if (!db.User.Any())
+            {
+                var seed = GetUsers.SeedUsers();
+                db.User.AddRange(seed);
+                db.SaveChanges();
+                Console.WriteLine("\n\nDatabase is ready...");
+                Console.WriteLine("Seed data added...\n\n");
+                break;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Console.WriteLine("\n\nIt seems database isn't ready...");
+            Console.WriteLine("waitint for the databade to start...\n\n");
+            Thread.Sleep(5000);
+            Console.WriteLine("Retrying...\n\n");
+        }
     }
 }
 

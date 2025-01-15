@@ -2,7 +2,6 @@ version: '3.7'
 services:
   db-mysql:
     image: mysql:latest
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: posterr
@@ -12,3 +11,17 @@ services:
       - "3306:3306"
     expose:
       - "3306"
+  webapi:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "3300:80"
+    expose:
+      - "80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - db-mysql
+   
