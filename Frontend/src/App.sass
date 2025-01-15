@@ -1,0 +1,130 @@
+.container
+    margin: 0 auto
+    width: 80%
+    display: flex
+
+.sidebar
+    display: flex
+    flex: 0 0 25%
+    padding: 10px
+    flex-direction: column
+    justify-content: start
+    align-items: center
+
+    .user
+        width: 100%
+        border-radius: 10px
+        padding: 20px 0
+        background-color: var(--primary-color)
+        &__avatar
+            width: 100px
+            height: 100px
+            border-radius: 50%
+            margin: 0 auto
+            border: 1px solid var(--quaternary-color)
+            background-color: white
+        &__name
+            color: white
+            text-align: center
+            font-size: 1.5rem
+
+
+.content
+    flex: 1
+    padding: 10px
+    .filter-box
+        display: flex
+        justify-content: space-between
+        &__search
+            display: flex
+            border: 1px solid #000
+            border-radius: 5px
+            flex-grow: 1
+            form
+                display: flex
+                width: 100%
+            input
+                flex: 1
+            button
+                flex: 0 
+
+        &__sort
+            display: flex
+        &__new
+            display: flex
+
+    .post-box
+        display: flex
+        flex-wrap: wrap
+        padding: 1rem
+        margin: 1rem
+        background-color: #727272
+        border-radius: 10px
+        
+
+        .post
+            display: flex
+            justify-content: center
+            align-items: center
+            font-size: 2rem
+            width: 100%
+            &__user
+                display: flex
+                flex-direction: column
+                flex: 0 0 20%
+                align-items: center
+                justify-content: flex-start
+                align-self: flex-start
+                &-avatar
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    width: 50px
+                    height: 50px
+                    border-radius: 50%
+                    background-color: var(--primary-color)
+                    color: white
+                &-name
+                    font-size: 1.5rem
+                    color: var(--text-color)
+
+            &__content
+                flex: 1
+                color: var(--text-color)
+            &__repost
+                flex: 0
+.no-posts
+    display: flex
+    justify-content: center
+    align-items: center
+    font-size: 2rem
+    color: var(--text-color)
+    background-color: #727272
+    border-radius: 10px
+    margin: 1rem
+
+.repost
+    display: flex
+    width: 100%
+    margin-bottom: .5rem
+    &__badget
+        font-size: 1.3rem
+        border-radius: 1rem
+        width: auto
+        background-color: var(--secondary-color)
+        color: white
+        padding: .5rem 1rem
+.post-date
+    font-size: 1.3rem
+    color: var(--text-color)
+
+.repost-author
+    margin: 0
+    font-size: 1.5rem
+    background-color: #1f1f1fac
+    border-radius: 10px
+    border: 3px solid var(--secondary-color)
+    width: auto
+    color: var(--text-color)
+    padding: .7rem 1rem
+    border-width: 3px
