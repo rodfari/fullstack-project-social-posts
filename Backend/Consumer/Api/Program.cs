@@ -1,5 +1,6 @@
 using Core.Application;
-using Infrastructure.Persistence.pgSQL;
+using Infrastructure.Persistence.mySQL;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,7 +45,11 @@ for(int i = 0; i < 3; i++)
 {
     try
     {
-        DbInitializer.SeedData(app);
+        var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+        db.Database.Migrate();
+        if(!db.User.Any())
+            GetUsers.SeedUsers();
         break;
     }
     catch (Exception e)
