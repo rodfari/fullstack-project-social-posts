@@ -40,12 +40,19 @@ app.UseCors(FrontEndCorsName);
 
 app.MapControllers();
 
-try
+for(int i = 0; i < 3; i++)
 {
-    DbInitializer.SeedData(app);
+    try
+    {
+        DbInitializer.SeedData(app);
+        break;
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        Console.WriteLine("waitint for the databade to start...");
+        Thread.Sleep(3000);
+    }
 }
-catch (Exception e)
-{
-    Console.WriteLine(e);
-}
+
 app.Run();

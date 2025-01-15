@@ -16,8 +16,7 @@ public class DbInitializer
 
     private static void SeedData(DataContext dataContext)
     {
-        // dataContext.Database.EnsureCreated();
-        // dataContext.Database.Migrate();
+        dataContext.Database.Migrate();
 
         if (dataContext.User.Any())
         {
