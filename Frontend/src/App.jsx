@@ -9,7 +9,7 @@ import Sidebar from "./components/UI/Sidebar";
 function App() {
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
-  const [updatePost, setUpdatePosts] = useState(false);
+  const [updatePost, setUpdatePost] = useState(false);
   const [sort, setSort] = useState("newest");
   const [search, setSearch] = useState("");
   const [repost, setRepost] = useState(false);
@@ -35,7 +35,7 @@ function App() {
   const contextProvide = {
     toggleModal,
     updatePost,
-    setUpdatePosts,
+    setUpdatePost,
     sort,
     setSort,
     search,

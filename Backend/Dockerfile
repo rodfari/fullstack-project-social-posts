@@ -10,6 +10,7 @@ COPY Core/Application/Application.csproj Core/Application/
 COPY Consumer/Api/Consumer.csproj Consumer/Api/
 COPY Infrastructure/Persistence/mySQL/mySQL.csproj Infrastructure/Persistence/mySQL/
 COPY Tests/ApplicationTests/ApplicationTests.csproj Tests/ApplicationTests/
+COPY Tests/PersistenceTests/PersistenceTests.csproj Tests/PersistenceTests/
 
 # Restore dependencies
 RUN dotnet restore

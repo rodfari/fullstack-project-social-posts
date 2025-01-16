@@ -13,11 +13,7 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
 
     public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, string sort, bool trending)
     {
-        var query = _context.Posts
-            .Include(p => p.User)
-            .Include(p => p.Author).DefaultIfEmpty()
-            .Include(p => p.Reposts).DefaultIfEmpty()
-            .AsQueryable();
+        var query = _context.Posts.AsQueryable();
 
         sort = string.IsNullOrEmpty(sort) ? "desc" : sort;
         if (predicate != null)
@@ -37,7 +33,11 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
         {
             query = query.OrderByDescending(p => p.CreatedAt);
         }
-
+        query = query
+            .Include(p => p.User)
+            .Include(p => p.Author)
+            .Include(p => p.Reposts);
+            
         return await query.AsNoTracking()
             .ToListAsync();
     }

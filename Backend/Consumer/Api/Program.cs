@@ -46,7 +46,7 @@ app.UseCors();
 //app.UseAuthorization();
 
 app.MapControllers();
-for (int i = 0; i < 3; i++)
+for (int i = 0; i < 10; i++)
 {
     try
     {
@@ -67,7 +67,7 @@ for (int i = 0; i < 3; i++)
     catch (Exception e)
     {
         Console.WriteLine(e);
-        Console.WriteLine("\n\nIt seems database isn't ready...");
+        Console.WriteLine("\n\nIt seems database isn't ready yet...");
         Console.WriteLine("waitint for the databade to start...\n\n");
         Thread.Sleep(5000);
         Console.WriteLine("Retrying...\n\n");

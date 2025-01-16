@@ -6,7 +6,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: posterr
       MYSQL_USER: posterr_user
-      MYSQL_PASSWORD: poster7898
+      MYSQL_PASSWORD: posterr7898
     ports:
       - "3306:3306"
     expose:
@@ -24,4 +24,12 @@ services:
       - ASPNETCORE_URLS=http://+:80
     depends_on:
       - db-mysql
-   
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - webapi
+      - db-mysql   

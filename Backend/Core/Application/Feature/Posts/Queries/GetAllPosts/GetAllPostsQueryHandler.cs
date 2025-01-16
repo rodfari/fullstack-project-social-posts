@@ -25,9 +25,9 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
 
         var posts = await _postsRepository.GetAllAsync(predicate, request.Sort, request.Trending);
 
-        List<PostDto> allPosts = new();
+        List<PostDto> allPosts = [];
 
-        posts.ForEach(p => allPosts.Add(new PostDto
+        posts?.ForEach(p => allPosts.Add(new PostDto
         {
             PostId = p.Id,
             Content = p.Content ?? p.Reposts?.Content,
@@ -45,6 +45,5 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
             Data = allPosts
         };
         return response;
-
     }
 }

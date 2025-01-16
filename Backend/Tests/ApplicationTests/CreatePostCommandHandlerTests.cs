@@ -1,10 +1,13 @@
 using System.Linq.Expressions;
+using Application.Feature.Posts.Queries;
 using AutoFixture;
 using Core.Application.Feature.Posts.Commands.CreatePosts;
+using Core.Application.Feature.Posts.Queries;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Core.Domain.Enums;
 using Moq;
+using Shouldly;
 
 namespace ApplicationTests;
 
@@ -13,7 +16,7 @@ public class CreatePostCommandHandlerTests
     public CreatePostCommandHandlerTests()
     {
     }
-    
+
     [Fact]
     public async Task CreatePostUseCase_WhenPostIsValid_ShouldCreatePost()
     {
@@ -54,7 +57,6 @@ public class CreatePostCommandHandlerTests
     {
         // Arrange
         var _postRepositoryMock = new Mock<IPostsRepository>();
-        var postRepositoryMock = new Mock<IPostsRepository>();
 
         var fixture = new Fixture();
         fixture.Customize<Posts>(
@@ -93,8 +95,7 @@ public class CreatePostCommandHandlerTests
     [Fact]
     public async void Should_Have_Error_When_Content_Is_Empty()
     {
-                var _postRepositoryMock = new Mock<IPostsRepository>();
-        var postRepositoryMock = new Mock<IPostsRepository>();
+        var _postRepositoryMock = new Mock<IPostsRepository>();
 
         var fixture = new Fixture();
         fixture.Customize<Posts>(
@@ -129,4 +130,7 @@ public class CreatePostCommandHandlerTests
         Assert.Contains(result.Errors, x => x.Code == Enum.GetName(ErrorCodes.CONTENT_REQUIRED));
 
     }
+
+
+
 }
