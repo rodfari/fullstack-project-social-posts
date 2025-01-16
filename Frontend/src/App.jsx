@@ -60,7 +60,6 @@ function App() {
           {modal && <Modal />}
         </AppContext.Provider>
       }
-      
     </>
   );
 }

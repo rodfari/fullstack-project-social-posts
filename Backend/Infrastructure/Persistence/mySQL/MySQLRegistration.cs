@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Infrastructure.Persistence.mySQL;
 public static class MySQLRegistration
 {
-    public static IServiceCollection AddPostgresPersistence(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddMySqlPersistence(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<DataContext>(options =>
         {

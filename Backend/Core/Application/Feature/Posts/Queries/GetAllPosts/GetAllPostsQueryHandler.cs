@@ -33,7 +33,7 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
             Content = p.Content ?? p.Reposts?.Content,
             CreatedAt = p.CreatedAt,
             IsRepost = p.IsRepost,
-            Username = p.User.Username,
+            Username = p.User?.Username,
             UserId = p.UserId,
             Author = p.Author?.Username,
 

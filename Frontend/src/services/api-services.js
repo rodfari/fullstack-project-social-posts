@@ -1,7 +1,10 @@
-const baseUrl = process.env.LOCAL_DOMAIN | process.env.REACT_APP_LOCAL_DOMAIN || process.env.DOCKER_DOMAIN
+const env = process.env;
+const environment = env.REACT_APP_ENV;
+const API_URL = 
+environment === 'development' ? env.REACT_APP_DEV_URL : env.REACT_APP_PROD_URL;
 
 export const createPost = async (content) => {
-    const response = await fetch(`${baseUrl}/posts`, {
+    const response = await fetch(`${API_URL}/posts`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -14,7 +17,7 @@ export const createPost = async (content) => {
 };
 
 export const createRepost = async (content) => {
-    const response = await fetch(`${baseUrl}/posts/repost`, {
+    const response = await fetch(`${API_URL}/posts/repost`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -27,7 +30,7 @@ export const createRepost = async (content) => {
 }
 
 export const getPosts = async (keyword, sort) => {
-    let url = `${baseUrl}/posts?`;
+    let url = `${API_URL}/posts?`;
     if(keyword)
         url += `keyword=${keyword}&`;
     if(sort)
@@ -41,7 +44,7 @@ export const getPosts = async (keyword, sort) => {
 
 
 export const searchPost = async (keyword) => {
-    const response = await fetch(`${baseUrl}/posts`,{
+    const response = await fetch(`${API_URL}/posts`,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -54,13 +57,13 @@ export const searchPost = async (keyword) => {
 
 
 export const getUsers = async () => {
-    const response = await fetch(`${baseUrl}/user`);
+    const response = await fetch(`${API_URL}/user`);
     const data = await response.json();
     return data;
 };
 
 export const getUserById = async (id) => {
-    const response = await fetch(`${baseUrl}/user/${id}`);
+    const response = await fetch(`${API_URL}/user/${id}`);
     const data = await response.json();
     return data;
 }
