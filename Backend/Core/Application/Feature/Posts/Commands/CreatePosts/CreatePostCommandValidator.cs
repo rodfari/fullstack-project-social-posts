@@ -48,7 +48,7 @@ public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
             .MustAsync(async (userId, cancellation) => 
             {
                 var repost = await postsRepository
-                .GetAllAsync(x => x.UserId == userId && x.OriginalPostId == x.OriginalPostId);
+                .GetAllAsync(x => x.UserId == userId && x.OriginalPostId == x.OriginalPostId, "", true);  
                 return repost.Count() <= 5;
             })
             .WithMessage("You have already reposted this post.")

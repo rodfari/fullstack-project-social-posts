@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.sass";
 import { getUserById } from "./services/api-services";
 import Content from "./components/UI/content/Content";
@@ -14,6 +14,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [repost, setRepost] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+
 
 
   useEffect(() => {

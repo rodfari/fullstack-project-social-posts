@@ -1,3 +1,4 @@
+using Api;
 using Core.Application;
 using Infrastructure.Persistence.mySQL;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         builder =>
         {
-            builder.WithOrigins(origins)
+            builder.WithOrigins(origins!)
             .AllowAnyHeader()
             .AllowAnyMethod();
         }
@@ -46,32 +47,10 @@ app.UseCors();
 //app.UseAuthorization();
 
 app.MapControllers();
-for (int i = 0; i < 10; i++)
-{
-    try
-    {
-        var scope = app.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<DataContext>();
-        db.Database.Migrate();
-        if (!db.User.Any())
-        {
-            var seed = GetUsers.SeedUsers();
-            db.User.AddRange(seed);
-            db.SaveChanges();
-            Console.WriteLine("\n\nDatabase is ready...");
-            Console.WriteLine("Seed data added...\n\n");
-            break;
-        }
 
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e);
-        Console.WriteLine("\n\nIt seems database isn't ready yet...");
-        Console.WriteLine("waitint for the databade to start...\n\n");
-        Thread.Sleep(5000);
-        Console.WriteLine("Retrying...\n\n");
-    }
-}
+
+//init database
+DatabaseInitialization
+.CreateAndSeed(app);
 
 app.Run();
