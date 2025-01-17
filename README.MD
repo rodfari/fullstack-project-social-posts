@@ -1,5 +1,18 @@
 # Rodrigo de Farias
 
+# Full-stack Assessment - 2.0 - Solution Project Introduction
+
+ℹ Chosen Architecture
+    For the backend I chose Clean Architecture, CQRS and Mediator Pattern.
+    I'm using FluentValidation for validations 
+
+# Critique
+
+//TODO - What would I improve in this project section
+
+# How to run this project?
+//TODO - How to run this project section
+
 To run this project, you need to have PostgreSQL, .NET Core 8, and Node.js installed on your machine.
 
 First, run the following command in your terminal:
