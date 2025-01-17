@@ -1,8 +1,6 @@
 using System.Linq.Expressions;
-using Application.Feature.Posts.Queries;
 using AutoFixture;
 using Core.Application.Feature.Posts.Commands.CreatePosts;
-using Core.Application.Feature.Posts.Queries;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Core.Domain.Enums;
@@ -10,6 +8,24 @@ using Moq;
 using Shouldly;
 
 namespace ApplicationTests;
+
+
+// Posts
+
+// Posts are the equivalent of Twitter's tweets. They are text-only, user-generated content. Users can write original posts and interact with other users' posts by reposting content. For this project, you should implement both — original posts, and reposts.
+
+// A user is not allowed to post more than 5 posts in one day (including reposts) - OK - tested
+// Posts can have a maximum of 777 characters - OK - tested
+// The post rendering should include the author's username and creation date, in addition to the content. - OK
+// Users cannot update or delete their posts - OK
+// Users can change the sorting between "latest" and "trending". When choosing "latest" (default), the posts will be rendered in descending order of their creation date. For "trending" posts, those with more reposts should come first.
+// When filtering results using keywords, only exact matches for post content are expected. - OK - not tested
+// Only original posts are expected as a result of the keywords filtering
+// Reposting
+
+// Users can repost other users' posts (like Twitter Retweet), limited to original posts
+// Users must confirm their intention when reposting. - OK
+// It should not be possible to repost the same post twice - NOT implemented
 
 public class CreatePostCommandHandlerTests
 {
@@ -131,6 +147,42 @@ public class CreatePostCommandHandlerTests
 
     }
 
+    [Fact]
+    public async Task Should_Have_Error_When_User_Posts_More_Than_Five_Posts_In_One_Day()
+    {
+        // Arrange
+        var _postRepositoryMock = new Mock<IPostsRepository>();
+        var fixture = new Fixture();
+        fixture.Customize<Posts>(
+            composer =>
+            composer.Without(x => x.User)
+            .Without(x => x.Reposts)
+            .Without(x => x.Author)
+            .With(x => x.CreatedAt, DateTime.UtcNow.Date));
 
+        var posts = fixture.CreateMany<Posts>(5).ToList();
+
+        _postRepositoryMock
+            .Setup(x => x.GetAllAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
+            .ReturnsAsync(posts);
+
+        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);
+
+        var createPostCmdFixture = new Fixture();
+        createPostCmdFixture.Customize<CreatePostCommand>(
+            composer =>
+            composer.With(x => x.Content, "This is a new post")
+            .With(x => x.IsRepost, false));
+
+        var request = createPostCmdFixture.Create<CreatePostCommand>();
+
+        // Act
+        var result = await handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Contains(result.Errors, x => x.Message == "You have reached your 5 post limit per day.");
+        Assert.Contains(result.Errors, x => x.Code == Enum.GetName(ErrorCodes.POST_LIMIT_EXCEEDED));
+    }
 
 }

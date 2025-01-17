@@ -4,6 +4,11 @@ using Core.Domain.Entities;
 namespace Core.Domain.Contracts;
 public interface IPostsRepository: IGenericRepository<Posts>
 {
-    Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, string sort, bool trending);
+    Task<List<Posts>> GetAllAsync(
+        Expression<Func<Posts, bool>>? predicate, 
+        int Page,
+        int PageSize,
+        string sort, 
+        bool trending);
     Task<Posts> GetPostAndUserByIdAsync(int id);
 }

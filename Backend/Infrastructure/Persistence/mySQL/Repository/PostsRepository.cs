@@ -11,33 +11,36 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
     {
     }
 
-    public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, string sort, bool trending)
+    public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, int Page, int PageSize, string sort, bool trending)
     {
         var query = _context.Posts.AsQueryable();
 
-        sort = string.IsNullOrEmpty(sort) ? "desc" : sort;
+
         if (predicate != null)
-        {
             query = query.Where(predicate);
-        }
-        if(sort.Equals("trending"))
+
+        //sort by trending
+        if (trending)
         {
-            //order by posts with most reposts
-            query = query.OrderByDescending(p => p.RepostCount);
+            query = query.OrderByDescending(x => x.RepostCount).ThenByDescending(x => x.CreatedAt);
         }
-        else if (sort == "asc")
+        else
         {
-            query = query.OrderBy(p => p.CreatedAt);
+            query = sort switch
+            {
+                "asc" => query.OrderBy(x => x.CreatedAt),
+                "desc" => query.OrderByDescending(x => x.CreatedAt),
+                _ => query.OrderByDescending(x => x.CreatedAt)
+            };
         }
-        else if (sort == "desc")
-        {
-            query = query.OrderByDescending(p => p.CreatedAt);
-        }
+
         query = query
             .Include(p => p.User)
             .Include(p => p.Author)
             .Include(p => p.Reposts);
-            
+
+        query = query.Skip((Page - 1) * PageSize).Take(PageSize);
+
         return await query.AsNoTracking()
             .ToListAsync();
     }

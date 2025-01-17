@@ -33,16 +33,12 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
             };
         }
 
-
         if (request.IsRepost)
         {
             var originalPost = await _postsRepository.GetByIdAsync(request.OriginalPostId.GetValueOrDefault());
             originalPost.RepostCount = originalPost.RepostCount + 1;
             await _postsRepository.UpdateAsync(originalPost);
         }
-
-
-
 
         var newPost = new Domain.Entities.Posts
         {
@@ -66,6 +62,4 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
             }
         };
     }
-
-
 }

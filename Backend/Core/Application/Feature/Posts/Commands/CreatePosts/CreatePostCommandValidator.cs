@@ -26,8 +26,8 @@ public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
                 .GetAllAsync(x => x.UserId == userId && x.CreatedAt.Date == date);
                 return postCount.Count() < 5;
             })
-            .WithMessage("You have reached the daily post limit.")
-            .WithErrorCode(Enum.GetName(ErrorCodes.POST_LIMIT));
+            .WithMessage("You have reached your 5 post limit per day.")
+            .WithErrorCode(Enum.GetName(ErrorCodes.POST_LIMIT_EXCEEDED));
 
         // 3. Check if the AuthorId is not empty when reposting
         RuleFor(x => x.AuthorId)
@@ -48,12 +48,15 @@ public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
             .MustAsync(async (userId, cancellation) => 
             {
                 var repost = await postsRepository
-                .GetAllAsync(x => x.UserId == userId && x.OriginalPostId == x.OriginalPostId, "", true);  
+                .GetAllAsync(x => x.UserId == userId && x.OriginalPostId == x.OriginalPostId, 1,  15,  "", true);  
                 return repost.Count() <= 5;
             })
             .WithMessage("You have already reposted this post.")
-            .WithErrorCode(Enum.GetName(ErrorCodes.REPOST_LIMIT))
+            .WithErrorCode(Enum.GetName(ErrorCodes.REPOST_LIMIT_EXCEEDED))
             .When(x => x.IsRepost == true);
+
+       
+
 
     }
 }
