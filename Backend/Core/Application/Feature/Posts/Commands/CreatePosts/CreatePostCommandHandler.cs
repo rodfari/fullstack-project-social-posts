@@ -2,6 +2,7 @@ using Core.Application.Reponses;
 using Core.Application.Reponses.PostsResponses;
 using Core.Domain.Contracts;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Core.Application.Feature.Posts.Commands.CreatePosts;
 public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResponse<CreatePostResponse>>

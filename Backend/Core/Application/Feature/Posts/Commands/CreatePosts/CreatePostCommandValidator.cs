@@ -44,12 +44,16 @@ public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
             .When(x => x.IsRepost == true);
 
         //5. Check if the UserId has already reposted the post
-        RuleFor(x => x.UserId)
-            .MustAsync(async (userId, cancellation) => 
+        RuleFor(x => new { x.UserId, x.OriginalPostId })
+            .MustAsync(async (x, cancellation) => 
             {
                 var repost = await postsRepository
-                .GetAllAsync(x => x.UserId == userId && x.OriginalPostId == x.OriginalPostId, 1,  15,  "", true);  
-                return repost.Count() <= 5;
+                .GetAllAsync(
+                    p => p.UserId == x.UserId 
+                    && p.OriginalPostId == x.OriginalPostId
+                    && p.IsRepost == true,
+                    1,  15, "", false);  
+                return repost.Count() == 0;
             })
             .WithMessage("You have already reposted this post.")
             .WithErrorCode(Enum.GetName(ErrorCodes.REPOST_LIMIT_EXCEEDED))

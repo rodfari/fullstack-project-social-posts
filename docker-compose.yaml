@@ -11,6 +11,21 @@ services:
       - "3306:3306"
     expose:
       - "3306"
+    healthcheck:
+      test: [ 
+          "CMD", 
+          "mysqladmin", 
+          "ping", 
+          "-h", 
+          "localhost", 
+          # "-u", 
+          # "posterr_user", 
+          # "-p", 
+          # "root"
+        ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
   webapi:
     build:
       context: ./Backend
@@ -23,7 +38,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - db-mysql
+      #- db-mysql
+      db-mysql:
+        condition: service_healthy
+
   frontend:
     build:
       context: ./Frontend
@@ -32,4 +50,3 @@ services:
       - "3000:3000"
     depends_on:
       - webapi
-      - db-mysql   

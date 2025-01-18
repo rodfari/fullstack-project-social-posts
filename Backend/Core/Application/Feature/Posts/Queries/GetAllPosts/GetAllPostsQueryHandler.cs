@@ -28,7 +28,7 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
 
         if (!string.IsNullOrEmpty(request.Keyword))
         {
-            predicate = x => x.Content!.Contains(request.Keyword);
+            predicate = x => x.Content!.Contains(request.Keyword) && x.IsRepost == false;
         }
 
 
@@ -57,7 +57,13 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
         TResponse<List<PostDto>> response = new()
         {
             Success = true,
-            Data = allPosts
+            Data = allPosts,
+            Pagination = new Pagination
+            {
+                Page = request.Page,
+                PageSize = request.PageSize,
+                Total = allPosts.Count
+            }
         };
         return response;
     }

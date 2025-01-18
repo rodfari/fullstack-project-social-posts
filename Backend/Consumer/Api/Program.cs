@@ -27,8 +27,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddApplicationService();
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine($"\n\n: connection string: {conn}\n\n");
-builder.Services.AddMySqlPersistence(conn);
+builder.Services.AddMySqlPersistence(conn!);
 //Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

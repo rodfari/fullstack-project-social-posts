@@ -26,21 +26,19 @@ const Content = () => {
     console.log(node);
   },[]);
 
-  if (!posts) {
-    return <p>Loading...</p>;
-  }
-  if (posts.length === 0) {
-    return (
-      <div className="no-posts">
-        <p>No posts found</p>
-      </div>
-    );
-  }
 
   return (
     <>
       <div className="content">
         <FilterBox />
+
+        { !posts && <p>Loading...</p> }
+        { posts.length === 0 && (
+          <div className="no-posts">
+            <p>No posts found</p>
+          </div>
+        )}
+
         {posts.map((post, index) => (
           index === posts.length - 1 ? (
               <Posts

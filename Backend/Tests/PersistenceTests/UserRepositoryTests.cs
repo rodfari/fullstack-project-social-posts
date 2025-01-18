@@ -29,6 +29,27 @@ public class UserRepositoryTests
     }
     
 
+    // [Fact]
+    // public async void Should_Throw_Exception_When_Trying_Adding_Same_User_Name_Twice()
+    // {
+    //     var options = new DbContextOptionsBuilder<DataContext>()
+    //        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+    //        .Options;
+        
+
+    //     var dataContext = new DataContext(options);
+    //     var userRepository = new UserRepository(dataContext);
+
+    //     Fixture builders = new Fixture();
+    //     builders.Customize<User>(composer => composer.With(p => p.Username, "SameUsername"));
+    //     var user = builders.CreateMany<User>(2).ToList();
+        
+    //     user.ForEach(async x => await userRepository.AddAsync(x));
+
+
+    // }
+
+
     [Fact]
     public async void GetUserById()
     {

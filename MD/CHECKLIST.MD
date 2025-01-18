@@ -15,7 +15,7 @@ Posterr is very similar to Twitter, but it has far fewer features. It only has o
 
 **Users**
 
-- Users have unique alphanumeric usernames -- IMPLEMENTING
+- Users have unique alphanumeric usernames -- DONE
 - Do not build an authentication logic -- OK
 - Do not build CRUD for users (registration and sign-in will be handled by a different service, the user model should be part of your data modeling tho. You can seed the database with 4 users to help the reviewer demo your solution) -- DONE
 - When/if necessary to make your application function, you may hard-code the default user (or have a setting for that). For instance, you may need to do this to implement creating new posts. -- DONE - using migrations.
@@ -28,15 +28,15 @@ Posts are the equivalent of Twitter's tweets. They are text-only, user-generated
 - Posts can have a maximum of 777 characters -- DONE
 - The post rendering should include the author's username and creation date, in addition to the content. -- DONE
 - Users cannot update or delete their posts -- OK 
-- Users can change the sorting between "latest" and "trending". When choosing "latest" (default), the posts will be rendered in descending order of their creation date. For "trending" posts, those with more reposts should come first. -- IN PROGRESS
+- Users can change the sorting between "latest" and "trending". When choosing "latest" (default), the posts will be rendered in descending order of their creation date. For "trending" posts, those with more reposts should come first. -- DONE
 - When filtering results using keywords, only exact matches for post content are expected. -- DONE
-- Only original posts are expected as a result of the keywords filtering -- IN PROGRESS
+- Only original posts are expected as a result of the keywords filtering -- DONE
 
 **Reposting**
 
-- Users can repost other users' posts (like Twitter Retweet), limited to original posts -- REVIEW
+- //TODO Users can repost other users' posts (like Twitter Retweet), limited to original posts 
 - Users must confirm their intention when reposting. -- DONE
-- It should **not** be possible to repost the same post twice -- IN PROGRESS
+- //TODO It should **not** be possible to repost the same post twice 
 
 
 
@@ -46,10 +46,10 @@ Estimated time: 6.5 hours
 
 - Build out a RESTful API and corresponding backend system to handle the features detailed above - IN PROGRESS
 - Build a single-page application in JavaScript using a framework of your choice, and integrate it with the backend implementation. IN PROGRESS
-- You should implement a real, production-ready database, and queries should be performant. IN PROGRESS
-- Do not implement additional features beyond what is explained in the overview.
-- Write automated tests for this project. IN PROGRESS
-- Make sure you provide a straightforward way to set up your app locally with proper requirements definitions (we strongly recommend a containerized solution and a package manager). IN PROGRESS
+- You should implement a real, production-ready database, and queries should be performant. DONE
+- Do not implement additional features beyond what is explained in the overview. NEED CHECKING...
+- //TODO Write automated tests for this project. 
+- Make sure you provide a straightforward way to set up your app locally with proper requirements definitions (we strongly recommend a containerized solution and a package manager). DONE
 
 ## Phase 2, self-critique & scaling
 

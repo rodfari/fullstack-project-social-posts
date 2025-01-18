@@ -22,7 +22,7 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
         //sort by trending
         if (trending)
         {
-            query = query.OrderByDescending(x => x.RepostCount).ThenByDescending(x => x.CreatedAt);
+            query = query.Where(x => !x.IsRepost).OrderByDescending(x => x.RepostCount);
         }
         else
         {
@@ -41,8 +41,8 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
 
         query = query.Skip((Page - 1) * PageSize).Take(PageSize);
 
-        return await query.AsNoTracking()
-            .ToListAsync();
+            return await query.AsNoTracking()
+                .ToListAsync();
     }
 
     public async Task<Posts> GetPostAndUserByIdAsync(int id)
