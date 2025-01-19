@@ -1,14 +1,22 @@
 import { useContext } from "react";
-import { AppContext } from "../../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 
 const FilterBox = () => {
   const ctx = useContext(AppContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    ctx.setPage(1);
+    ctx.setPageSize(15);
     const fd = new FormData(e.target);
     const search = fd.get("search");
     ctx.setSearch(search);
+  }
+
+  const sortHandler = (e) => {
+    ctx.setPage(1);
+    ctx.setPageSize(15);
+    ctx.setSort(e.target.value);
   }
 
   return (
@@ -21,10 +29,9 @@ const FilterBox = () => {
         </form>
         </div>
         <div className="filter-box__sort">
-          <select onChange={(e) => ctx.setSort(e.target.value)}>
-            <option value="desc">Newest</option>
-            <option value="asc">Oldest</option>
-            <option value="trending">Trending</option>
+          <select onChange={sortHandler} name="sort">
+            <option selected defaultValue="desc">latest</option>
+            <option defaultValue="true">trending</option>
           </select>
         </div>
         <div className="filter-box__new">

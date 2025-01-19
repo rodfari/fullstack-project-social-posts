@@ -1,10 +1,7 @@
 import { forwardRef } from "react";
-import RepostButton from "../RepostButton";
+import RepostButton from "./RepostButton";
 
 const Posts = forwardRef(({ post, userId }, ref) => {
-
-  
-
   return (
     <div ref={ref} className="post-box" key={post.postId}>
       {post.isRepost && (

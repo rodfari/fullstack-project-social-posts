@@ -6,7 +6,7 @@ Posterr is very similar to Twitter, but it has far fewer features. It only has o
 
 **Homepage**
 
-- By default, the homepage will display a feed of posts (including reposts) starting with the latest 15 posts. Older posts are loaded on-demand in chunks of 20 posts whenever the user scrolls to the bottom of the page. -- IN PROGRESS
+- By default, the homepage will display a feed of posts (including reposts) starting with the latest 15 posts. Older posts are loaded on-demand in chunks of 20 posts whenever the user scrolls to the bottom of the page. -- DONE
 - New posts can be written from this page. -- DONE
 - Users can repost existing posts unless the content is a repost. -- DONE
 - A search input allows results filtering by keywords -- DONE

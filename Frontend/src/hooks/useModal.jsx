@@ -6,8 +6,6 @@ export const useModal = () => {
     const toggleModal = () => {
         setModal((prev) => (prev ? false : true));
     };
-
     const element = <Modal />;
-    
     return { modal, toggleModal, element };
 };

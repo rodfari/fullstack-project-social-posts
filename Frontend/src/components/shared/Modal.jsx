@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
-import { AppContext } from "../context/AppContext";
-import { createPost } from "../services/api-services";
+import { createPost } from "../../services/api-services";
+import { AppContext } from "../../context/AppContext";
+import { UserContext } from "../../context/UserContext";
 
 const Modal = () => {
-  const ctx = useContext(AppContext);
+  const appCtx = useContext(AppContext);
+  const userCtx = useContext(UserContext);
 
   const [errors, setErrors] = useState([]);
 
@@ -11,13 +13,14 @@ const Modal = () => {
     e.preventDefault();
     const fd = new FormData(e.target);
     const post = fd.get("post");
-    const userId = ctx.user.id;
+    const userId = userCtx.user.id;
 
     const body = { userId: userId, content: post };
+
     createPost(body).then((data) => {
       if (data.success === true) {
-        ctx.toggleModal((prev) => !prev);
-        ctx.setUpdatePost((prex) => !prex);
+        appCtx.toggleModal((prev) => !prev);
+        appCtx.setUpdatePost((prex) => !prex);
         return;
       }
 
@@ -34,8 +37,8 @@ const Modal = () => {
         <div className="modal">
           <div className="modal__header">
             <div className="modal__title">New Post</div>
-            <div className="modal__close" onClick={ctx.toggleModal}>
-              X
+            <div className="modal__close" onClick={appCtx.toggleModal}>
+              x
             </div>
           </div>
           <form onSubmit={handleSubmit}>

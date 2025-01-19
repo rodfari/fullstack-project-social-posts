@@ -13,7 +13,10 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
 
     public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, int Page, int PageSize, string sort, bool trending)
     {
-        var query = _context.Posts.AsQueryable();
+        var query = _context.Posts.Include(p => p.User)
+            .Include(p => p.Author)
+            .Include(p => p.Reposts)
+            .AsQueryable();
 
 
         if (predicate != null)
@@ -26,18 +29,11 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
         }
         else
         {
-            query = sort switch
-            {
-                "asc" => query.OrderBy(x => x.CreatedAt),
-                "desc" => query.OrderByDescending(x => x.CreatedAt),
-                _ => query.OrderByDescending(x => x.CreatedAt)
-            };
+            
+            query = query.OrderByDescending(x => x.CreatedAt);
+            Console.WriteLine("\n\n\nsort by created at\n\n\n");
         }
 
-        query = query
-            .Include(p => p.User)
-            .Include(p => p.Author)
-            .Include(p => p.Reposts);
 
         query = query.Skip((Page - 1) * PageSize).Take(PageSize);
 

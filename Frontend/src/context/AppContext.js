@@ -2,6 +2,10 @@
 import { createContext } from 'react'
 
 export const AppContext = createContext({
+    page: 1,
+    setPage: () => {},
+    pageSize: 15,
+    setPageSize: () => {},
     toggleModal: () => {},
     setUpdatePost: () => {},
     updatePost: false,
@@ -10,9 +14,5 @@ export const AppContext = createContext({
     search: "",
     setSearch: () => {},
     repost: () => {},
-    setRepost: () => {},
-    user: {},
-    setUser: () => {},
-    currentUser: {},
-    setCurrentUser: () => {},
+    setRepost: () => {}
 });

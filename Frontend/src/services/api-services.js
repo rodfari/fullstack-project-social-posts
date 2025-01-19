@@ -29,14 +29,15 @@ export const createRepost = async (content) => {
     return data;
 }
 
-export const getPosts = async (keyword, sort) => {
-    let url = `${API_URL}/posts?`;
+export const getPosts = async (page, pageSize, keyword, sort) => {
+    console.log(page, pageSize, keyword, sort);
+    let url = `${API_URL}/posts?page=${page}&pageSize=${pageSize}`;
     if(keyword)
-        url += `keyword=${keyword}&`;
+        url += `&keyword=${keyword}`;
     if(sort)
-        url += `sort=${sort}&`;
-
-    const response = await fetch(url);
+        url += sort === "latest" ? `&sort=desc` : `&sort=desc&trending=${true}`;
+    console.log(url);
+    const response = await fetch(`${url}`);
     const status =  response.status;
     const data = await response.json();
     return data;

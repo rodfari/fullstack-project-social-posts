@@ -8,9 +8,13 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("tb_users");
+        
         builder.HasKey(x => x.Id);
-        builder.HasIndex(x => x.Username, "ConstraintUniqueUser").IsUnique();
-        builder.Property(x => x.Username).IsRequired();
+
+        builder.Property(x => x.Username)
+            .IsRequired();
+            
+        builder.HasIndex(x => x.Username).IsUnique();
     }
     
 }

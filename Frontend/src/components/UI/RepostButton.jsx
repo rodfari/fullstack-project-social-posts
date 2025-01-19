@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { createRepost } from "../../services/api-services";
 import { AppContext } from "../../context/AppContext";
 import Swal from "sweetalert2";

@@ -1,39 +1,41 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.sass";
-import { getUserById } from "./services/api-services";
-import Content from "./components/UI/content/Content";
-import Modal from "./components/Modal";
+import { getUsers } from "./services/api-services";
+import Modal from "./components/shared/Modal";
 import { AppContext } from "./context/AppContext";
 import Sidebar from "./components/UI/Sidebar";
+import { UserContext } from "./context/UserContext";
+import Content from "./components/UI/Content";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([{}]);
   const [modal, setModal] = useState(false);
   const [updatePost, setUpdatePost] = useState(false);
   const [sort, setSort] = useState("newest");
   const [search, setSearch] = useState("");
   const [repost, setRepost] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-
-
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(15);
 
   useEffect(() => {
-    getUserById(currentUser ?? 1).then((data) => {
-      if (data) {
-        const user = JSON.stringify(data); 
-        document.cookie = `user=${user}; path=/`;
-        setUser(data);
+    getUsers().then((data) => {
+      if (data){
+        setUsers(data);
+        setUser(data[0]);
       }
     });
-  }, [currentUser]);
-
- 
+  }, []);
 
   const toggleModal = () => {
     setModal((prev) => (prev ? false : true));
   };
 
   const contextProvide = {
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
     toggleModal,
     updatePost,
     setUpdatePost,
@@ -41,26 +43,31 @@ function App() {
     setSort,
     search,
     setSearch,
-    user,
-    setUser,
     repost,
     setRepost,
-    currentUser,
-    setCurrentUser,
+  };
+
+  const userContextProvider = {
+    user,
+    setUser,
+    users,
+    setUsers
   };
 
   return (
     <>
-      { !user && <div className="loading">Loading...</div> }
-      { user && 
+      {!user && <div className="loading">Loading...</div>}
+      {user && (
         <AppContext.Provider value={contextProvide}>
-        <div className="container">
-          <Sidebar />
-          <Content />
-        </div>
-          {modal && <Modal />}
+          <UserContext.Provider value={ userContextProvider }>
+            <div className="container">
+              <Sidebar />
+              <Content />
+            </div>
+            {modal && <Modal />}
+          </UserContext.Provider>
         </AppContext.Provider>
-      }
+      )}
     </>
   );
 }
