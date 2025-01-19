@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Linq;
 using Core.Application.Dtos;
 using Core.Application.Feature.Posts.Queries;
 using Core.Application.Reponses;
@@ -39,7 +40,8 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
             request.Sort, 
             request.Trending
             );
-
+        int total = await _postsRepository.CountAsync();
+        
         List<PostDto> allPosts = [];
 
         posts?.ForEach(p => allPosts.Add(new PostDto
@@ -62,7 +64,7 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
             {
                 Page = request.Page,
                 PageSize = request.PageSize,
-                Total = allPosts.Count
+                Total = total
             }
         };
         return response;

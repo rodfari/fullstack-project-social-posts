@@ -1,22 +1,47 @@
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
+import { ModalContext } from "../../context/ModalContext";
+import { TimelineContext } from "../../context/TimeLineContext";
 
 const FilterBox = () => {
-  const ctx = useContext(AppContext);
+  const tmlCtx = useContext(TimelineContext);
+  const modalCtx = useContext(ModalContext);
 
   const handleSubmit = (e) => {
+    console.log("submit");
     e.preventDefault();
-    ctx.setPage(1);
-    ctx.setPageSize(15);
+    tmlCtx.setParam({
+      type: "SET_PAGE",
+      payload: 1,
+    });
+    tmlCtx.setParam({
+      type: "SET_PAGE_SIZE",
+      payload: 15,
+    });
     const fd = new FormData(e.target);
     const search = fd.get("search");
-    ctx.setSearch(search);
+    tmlCtx.setParam({
+      type: "SET_SEARCH",
+      payload: search,
+    });
   }
 
   const sortHandler = (e) => {
-    ctx.setPage(1);
-    ctx.setPageSize(15);
-    ctx.setSort(e.target.value);
+
+    tmlCtx.setParam({
+      type: "SET_PAGE",
+      payload: 1,
+    });
+    tmlCtx.setParam({
+      type: "SET_PAGE_SIZE",
+      payload: 15,
+    });
+    const sort = e.target.value;
+    console.log(sort);
+    tmlCtx.setParam({
+      type: "SET_SORT",
+      payload: sort
+    });
   }
 
   return (
@@ -29,13 +54,15 @@ const FilterBox = () => {
         </form>
         </div>
         <div className="filter-box__sort">
-          <select onChange={sortHandler} name="sort">
-            <option selected defaultValue="desc">latest</option>
-            <option defaultValue="true">trending</option>
+
+          <select onChange={sortHandler}>
+            <option value="desc">latest</option>
+            <option value="trending">trending</option>
           </select>
+
         </div>
         <div className="filter-box__new">
-          <button onClick={ ctx.toggleModal }>New Post</button>
+          <button onClick={ modalCtx.toggleModal }>New Post</button>
         </div>
       </div>
     </>

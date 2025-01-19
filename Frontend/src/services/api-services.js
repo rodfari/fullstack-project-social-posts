@@ -30,12 +30,12 @@ export const createRepost = async (content) => {
 }
 
 export const getPosts = async (page, pageSize, keyword, sort) => {
-    console.log(page, pageSize, keyword, sort);
+    // console.log(page, pageSize, keyword, sort);
     let url = `${API_URL}/posts?page=${page}&pageSize=${pageSize}`;
     if(keyword)
         url += `&keyword=${keyword}`;
     if(sort)
-        url += sort === "latest" ? `&sort=desc` : `&sort=desc&trending=${true}`;
+        url += `&sort=${sort}`;
     console.log(url);
     const response = await fetch(`${url}`);
     const status =  response.status;

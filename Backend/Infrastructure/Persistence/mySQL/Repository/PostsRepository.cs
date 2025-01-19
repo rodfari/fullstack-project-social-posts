@@ -11,6 +11,11 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
     {
     }
 
+    public Task<int> CountAsync()
+    {
+        return _context.Posts.CountAsync();
+    }
+
     public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, int Page, int PageSize, string sort, bool trending)
     {
         var query = _context.Posts.Include(p => p.User)
@@ -23,7 +28,7 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
             query = query.Where(predicate);
 
         //sort by trending
-        if (trending)
+        if (sort.Equals("trending"))
         {
             query = query.Where(x => !x.IsRepost).OrderByDescending(x => x.RepostCount);
         }

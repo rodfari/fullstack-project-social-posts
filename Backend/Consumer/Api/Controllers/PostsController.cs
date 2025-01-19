@@ -17,15 +17,15 @@ public class PostsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetPosts([FromQuery] int page, int pageSize, string? keyword, string? sort, bool trending)
+    public async Task<IActionResult> GetPosts([FromQuery] int page, int pageSize, string? keyword, string? sort)
     {
+        Console.WriteLine($"\n\n{ sort }\n\n");
         var result = await _mediator.Send(new GetAllPostsQuery { 
             Page = page,
             PageSize = pageSize,
             Keyword = keyword, 
-            Trending = trending,
             Sort = sort });
-        return Ok(result.Data);
+        return Ok(result);
     }
 
     [HttpGet("{id}")]

@@ -2,11 +2,14 @@ import { useContext, useState } from "react";
 import { createPost } from "../../services/api-services";
 import { AppContext } from "../../context/AppContext";
 import { UserContext } from "../../context/UserContext";
+import { ModalContext } from "../../context/ModalContext";
+import { TimelineContext } from "../../context/TimeLineContext";
 
 const Modal = () => {
-  const appCtx = useContext(AppContext);
   const userCtx = useContext(UserContext);
-
+  const modalContext = useContext(ModalContext);
+  const tmlCtx = useContext(TimelineContext);
+  console.log(tmlCtx);
   const [errors, setErrors] = useState([]);
 
   const handleSubmit = (e) => {
@@ -19,11 +22,11 @@ const Modal = () => {
 
     createPost(body).then((data) => {
       if (data.success === true) {
-        appCtx.toggleModal((prev) => !prev);
-        appCtx.setUpdatePost((prex) => !prex);
+        modalContext.toggleModal((prev) => !prev);
+        tmlCtx.setRefresh(true);
         return;
       }
-
+      
       if (data.errors) {
         setErrors(data.errors);
       }
@@ -37,7 +40,7 @@ const Modal = () => {
         <div className="modal">
           <div className="modal__header">
             <div className="modal__title">New Post</div>
-            <div className="modal__close" onClick={appCtx.toggleModal}>
+            <div className="modal__close" onClick={modalContext.toggleModal}>
               x
             </div>
           </div>

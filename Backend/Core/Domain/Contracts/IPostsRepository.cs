@@ -4,6 +4,7 @@ using Core.Domain.Entities;
 namespace Core.Domain.Contracts;
 public interface IPostsRepository: IGenericRepository<Posts>
 {
+    Task<int> CountAsync();
     Task<List<Posts>> GetAllAsync(
         Expression<Func<Posts, bool>>? predicate, 
         int Page,
