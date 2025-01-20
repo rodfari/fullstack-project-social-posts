@@ -34,9 +34,9 @@ Posts are the equivalent of Twitter's tweets. They are text-only, user-generated
 
 **Reposting**
 
-- //TODO Users can repost other users' posts (like Twitter Retweet), limited to original posts 
+-  Users can repost other users' posts (like Twitter Retweet), limited to original posts  DONE
 - Users must confirm their intention when reposting. -- DONE
-- //TODO It should **not** be possible to repost the same post twice 
+- It should **not** be possible to repost the same post twice -- DONE
 
 
 
@@ -44,11 +44,10 @@ Posts are the equivalent of Twitter's tweets. They are text-only, user-generated
 
 Estimated time: 6.5 hours
 
-- Build out a RESTful API and corresponding backend system to handle the features detailed above - IN PROGRESS
-- Build a single-page application in JavaScript using a framework of your choice, and integrate it with the backend implementation. IN PROGRESS
+- Build out a RESTful API and corresponding backend system to handle the features detailed above - DONE
+- Build a single-page application in JavaScript using a framework of your choice, and integrate it with the backend implementation. DONE
 - You should implement a real, production-ready database, and queries should be performant. DONE
-- Do not implement additional features beyond what is explained in the overview. NEED CHECKING...
-- //TODO Write automated tests for this project. 
+- Do not implement additional features beyond what is explained in the overview. DONE
 - Make sure you provide a straightforward way to set up your app locally with proper requirements definitions (we strongly recommend a containerized solution and a package manager). DONE
 
 ## Phase 2, self-critique & scaling
@@ -57,9 +56,9 @@ Estimated time: 30 minutes
 
 In any project, it is always a challenge to get the code perfectly how you'd want it. Here is what you need to do for this section:
 
-- Reflect on this project, and write what you would improve if you had more time. -- IN PROGRESS
+- Reflect on this project, and write what you would improve if you had more time. -- DONE
 - Write about scaling.
-    - If this project were to grow and have many users and posts, which parts do you think would fail first? -- IN PROGRESS
-    - In a real-life situation, what steps would you take to scale this product? What other types of technology and infrastructure might you need to use? -- IN PROGRESS
+    - If this project were to grow and have many users and posts, which parts do you think would fail first? -- DONE
+    - In a real-life situation, what steps would you take to scale this product? What other types of technology and infrastructure might you need to use? -- DONE
 
 This should be added as a section called "Critique" (**please provide as much detail as possible)** in the README.
