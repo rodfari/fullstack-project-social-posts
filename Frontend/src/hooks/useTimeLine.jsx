@@ -11,7 +11,6 @@ const ActionTypes = {
 };
 
 const reducer = (state, action) => {
-  console.log("action called")
   switch (action.type) {
     case ActionTypes.SET_PAGE:
       return { ...state, page: action.payload };
@@ -36,18 +35,15 @@ const initialState = {
   search: "",
 };
 
-export const useTimeLine = (requestParams, timeLineContext) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [hasMore, setHasMore] = useState(false);
+export const useTimeLine = () => {
+    const [hasMore, setHasMore] = useState(true);
     const [posts, setPosts] = useState([]);
     const [refresh, setRefresh] = useState(false);
-    //debugger
     const [state, dispatcher] = useReducer(reducer, initialState);
+    const [total] = useReducer(0);
 
     useEffect(() => {
-      console.log("params has changed");
-      console.log(state);
+      console.log("effect");
       getPosts(state.page, 
         state.pageSize, 
         state.search, state.sort).then(
@@ -55,23 +51,26 @@ export const useTimeLine = (requestParams, timeLineContext) => {
           if (request.data.length === 0) return;
           setPosts((prev) => {
             if (state.page < 2) return request.data;
-            return [...prev, ...request.data];
+            const arr = [...prev, ...request.data];
+
+            return arr;
           });
         }
       );
     }, [state.page, state.pageSize, state.search, state.sort, refresh]);
-
+    
+    if((total - 1 ) <= posts.length) {
+      setHasMore(false);
+    }
 
     return {
         actions: ActionTypes,
         setParam: dispatcher,
         params: state,
-        isLoading,
         posts,
-        error,
         hasMore,
         refresh,
         setRefresh,
-        forceRefresh: () => setRefresh((prev) => !prev),
+        forceRefresh: () => setRefresh((prev) => !prev)
     };
 };

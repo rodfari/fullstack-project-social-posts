@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
 import { ModalContext } from "../../context/ModalContext";
 import { TimelineContext } from "../../context/TimeLineContext";
 
@@ -8,7 +7,6 @@ const FilterBox = () => {
   const modalCtx = useContext(ModalContext);
 
   const handleSubmit = (e) => {
-    console.log("submit");
     e.preventDefault();
     tmlCtx.setParam({
       type: "SET_PAGE",

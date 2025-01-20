@@ -37,8 +37,7 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
             predicate, 
             request.Page,
             request.PageSize,
-            request.Sort, 
-            request.Trending
+            request.Sort
             );
         int total = await _postsRepository.CountAsync();
         

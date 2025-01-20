@@ -9,7 +9,6 @@ public interface IPostsRepository: IGenericRepository<Posts>
         Expression<Func<Posts, bool>>? predicate, 
         int Page,
         int PageSize,
-        string sort, 
-        bool trending);
+        string sort);
     Task<Posts> GetPostAndUserByIdAsync(int id);
 }

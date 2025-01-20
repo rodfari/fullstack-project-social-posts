@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import RepostButton from "./RepostButton";
 
-const Posts = forwardRef(({ post, userId }, ref) => {
+const Posts = forwardRef(({ post, userId, forceRefresh }, ref) => {
   return (
     <div ref={ref} className="post-box" key={post.postId}>
       {post.isRepost && (
@@ -30,6 +30,7 @@ const Posts = forwardRef(({ post, userId }, ref) => {
             userId={userId}
             authorId={post.userId}
             originalPostId={post.postId}
+            forceRefresh={forceRefresh}
           />
         )}
       </div>

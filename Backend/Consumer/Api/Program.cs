@@ -16,7 +16,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         builder =>
         {
-            builder.WithOrigins(origins!)
+            builder.WithOrigins([.. origins!])
             .AllowAnyHeader()
             .AllowAnyMethod();
         }

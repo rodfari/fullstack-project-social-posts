@@ -16,7 +16,7 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
         return _context.Posts.CountAsync();
     }
 
-    public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, int Page, int PageSize, string sort, bool trending)
+    public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, int Page, int PageSize, string sort)
     {
         var query = _context.Posts.Include(p => p.User)
             .Include(p => p.Author)

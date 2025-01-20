@@ -37,7 +37,7 @@ public class GetPostQueryHandlerTests
         };
 
         _postRepositoryMock
-            .Setup(x => x.GetAllAsync(It.IsAny<Expression<Func<Posts, bool>>>(),0, 15, It.IsAny<string>(), It.IsAny<bool>()))
+            .Setup(x => x.GetAllAsync(It.IsAny<Expression<Func<Posts, bool>>>(),0, 15, It.IsAny<string>()))
             .ReturnsAsync(posts);
 
         var handler = new GetAllPostsQueryHandler(_postRepositoryMock.Object);

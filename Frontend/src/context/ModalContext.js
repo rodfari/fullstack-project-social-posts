@@ -1,7 +1,8 @@
 import { createContext } from "react";
 
 export const ModalContext = createContext({
-    modal: false,
+    flag: false,
     setModal: () => {},
     toggleModal: () => {},
+    
 });

@@ -52,7 +52,7 @@ public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
                     p => p.UserId == x.UserId 
                     && p.OriginalPostId == x.OriginalPostId
                     && p.IsRepost == true,
-                    1,  15, "", false);  
+                    1,  15, "");  
                 return repost.Count() == 0;
             })
             .WithMessage("You have already reposted this post.")

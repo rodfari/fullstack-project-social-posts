@@ -1,15 +1,13 @@
 import { useContext, useState } from "react";
 import { createPost } from "../../services/api-services";
-import { AppContext } from "../../context/AppContext";
 import { UserContext } from "../../context/UserContext";
 import { ModalContext } from "../../context/ModalContext";
 import { TimelineContext } from "../../context/TimeLineContext";
 
-const Modal = () => {
+const Modal = ({ forceRefresh }) => {
   const userCtx = useContext(UserContext);
   const modalContext = useContext(ModalContext);
   const tmlCtx = useContext(TimelineContext);
-  console.log(tmlCtx);
   const [errors, setErrors] = useState([]);
 
   const handleSubmit = (e) => {
@@ -22,8 +20,13 @@ const Modal = () => {
 
     createPost(body).then((data) => {
       if (data.success === true) {
-        modalContext.toggleModal((prev) => !prev);
-        tmlCtx.setRefresh(true);
+          modalContext.toggleModal((prev) => !prev);
+          console.log(tmlCtx);
+          tmlCtx.setParam({
+            type: 'SET_PAGE',
+            payload: 1,
+          });
+          forceRefresh();
         return;
       }
       

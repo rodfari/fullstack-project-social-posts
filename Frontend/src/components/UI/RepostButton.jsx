@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { createRepost } from "../../services/api-services";
-import { AppContext } from "../../context/AppContext";
 import Swal from "sweetalert2";
+import { TimelineContext } from "../../context/TimeLineContext";
 
-const RepostButton = ({ userId, authorId, originalPostId }) => {
-  const ctx = useContext(AppContext);
+const RepostButton = ({ userId, authorId, originalPostId, forceRefresh }) => {
+  const tmlCtx = useContext(TimelineContext);
 
   const clickHandler = () => {
     Swal.fire({
@@ -18,25 +18,27 @@ const RepostButton = ({ userId, authorId, originalPostId }) => {
       confirmButtonText: "Respost it!",
     }).then((result) => {
       if (result.isConfirmed) {
-
         createRepost({
           authorId: authorId,
           userId: userId,
           originalPostId: originalPostId,
           isRepost: true,
         }).then((data) => {
-          if(data.success){
-            ctx.setRepost((prev) => !prev);
-          }else{
+          if (data.success) {
+            tmlCtx.setParam({
+              type: "SET_PAGE",
+              payload: 1,
+            });
+            forceRefresh();
+          } else {
             const errors = data.errors;
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: errors[0].message
+              text: errors[0].message,
             });
           }
         });
-        
       }
     });
   };
