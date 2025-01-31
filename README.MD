@@ -1,7 +1,5 @@
 # Rodrigo de Farias
 
-# Full-stack Assessment - 2.0 - Solution Project Introduction
-
 ## What and Why?
 For the backend I chose Clean Architecture, CQRS and Mediator Patter.
     
