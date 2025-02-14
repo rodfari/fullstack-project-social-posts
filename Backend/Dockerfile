@@ -7,10 +7,11 @@ WORKDIR /app
 COPY Backend.sln ./
 COPY Core/Domain/Domain.csproj Core/Domain/
 COPY Core/Application/Application.csproj Core/Application/
-COPY Consumer/Api/Consumer.csproj Consumer/Api/
+COPY Presentation/Api/Api.csproj Presentation/Api/
 COPY Infrastructure/Persistence/mySQL/mySQL.csproj Infrastructure/Persistence/mySQL/
-COPY Tests/ApplicationTests/ApplicationTests.csproj Tests/ApplicationTests/
-COPY Tests/PersistenceTests/PersistenceTests.csproj Tests/PersistenceTests/
+COPY Tests/Application/ApplicationTests.csproj Tests/Application/
+COPY Tests/Persistence/PersistenceTests.csproj Tests/Persistence/
+COPY Tests/Presentation/Api.csproj Tests/Presentation/
 
 # Restore dependencies
 RUN dotnet restore
