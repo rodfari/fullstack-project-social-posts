@@ -8,14 +8,6 @@ using MediatR;
 
 namespace Application.Feature.Posts.Queries;
 
-public delegate Task<TResponse<List<PostDto>>> GetAllPostsQueryDelegate(
-    string Keyword,
-    int Page,
-    int PageSize,
-    string Sort,
-    bool Trending
-);
-
 public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TResponse<List<PostDto>>>
 {
     private readonly IPostsRepository _postsRepository;
