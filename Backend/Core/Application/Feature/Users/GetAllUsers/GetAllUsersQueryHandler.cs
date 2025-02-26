@@ -1,6 +1,6 @@
-using Core.Application.Reponses;
 using Core.Application.Reponses.UserResponses;
 using Core.Domain.Contracts;
+using Core.Domain.Entities;
 using MediatR;
 
 namespace Application.Feature.Users.GetAllUsers;
@@ -14,7 +14,7 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumer
     }
     public async Task<IEnumerable<GetUserResponse>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        var users =  await _userRepository.GetAllAsync();
+        var users =  await _userRepository.GetAllAsync() as List<User>;
         var usersResponse = new List<GetUserResponse>();
 
         users.ForEach(user =>

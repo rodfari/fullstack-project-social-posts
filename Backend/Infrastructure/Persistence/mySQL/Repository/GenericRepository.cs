@@ -24,7 +24,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : DefaultEntit
     public async Task DeleteAsync(int id)
     {
         var refe = await _context.FindAsync<T>(id);
-        _context.Remove(refe);
+        _context.Remove<T>(refe);
         await _context.SaveChangesAsync();
     }
 
@@ -35,12 +35,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : DefaultEntit
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _context.Set<T>().AsNoTracking().ToListAsync();
     }
 
-    public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+    public async Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate)
     {
         return await _context.Set<T>().Where(predicate).AsNoTracking().ToListAsync();
     }

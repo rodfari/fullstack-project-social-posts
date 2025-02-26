@@ -4,10 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Application;
 
-public static class ApplicationRegistration {
-
-   public static IServiceCollection AddApplicationService(this IServiceCollection services){
-         services.AddMediatR(Assembly.GetExecutingAssembly());
-         return services;
-   }
+public static class ApplicationRegistration
+{
+      public static IServiceCollection AddApplicationService(this IServiceCollection services)
+      {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            return services;
+      }
 }

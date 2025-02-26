@@ -23,7 +23,7 @@ public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
             .MustAsync(async (userId, cancellation) => 
             {
                 var postCount =  await postsRepository
-                .GetAllAsync(x => x.UserId == userId && x.CreatedAt.Date == date);
+                .FilterAsync(x => x.UserId == userId && x.CreatedAt.Date == date);
                 return postCount.Count() < 5;
             })
             .WithMessage("You have reached your 5 post limit per day.")

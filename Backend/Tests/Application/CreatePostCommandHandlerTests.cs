@@ -51,7 +51,7 @@ public class CreatePostCommandHandlerTests
             .Setup(x => x.AddAsync(It.IsAny<Posts>()))
             .ReturnsAsync(posts);
         _postRepositoryMock
-            .Setup(x => x.GetAllAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
+            .Setup(x => x.FilterAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
             .ReturnsAsync(new List<Posts>());
         // Act
         var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);
@@ -87,7 +87,7 @@ public class CreatePostCommandHandlerTests
             .Setup(x => x.AddAsync(It.IsAny<Posts>()))
             .ReturnsAsync(posts);
         _postRepositoryMock
-            .Setup(x => x.GetAllAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
+            .Setup(x => x.FilterAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
             .ReturnsAsync(new List<Posts>());
 
         var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);
@@ -126,7 +126,7 @@ public class CreatePostCommandHandlerTests
             .Setup(x => x.AddAsync(It.IsAny<Posts>()))
             .ReturnsAsync(posts);
         _postRepositoryMock
-            .Setup(x => x.GetAllAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
+            .Setup(x => x.FilterAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
             .ReturnsAsync(new List<Posts>());
 
         var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);
@@ -163,7 +163,7 @@ public class CreatePostCommandHandlerTests
         var posts = fixture.CreateMany<Posts>(5).ToList();
 
         _postRepositoryMock
-            .Setup(x => x.GetAllAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
+            .Setup(x => x.FilterAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
             .ReturnsAsync(posts);
 
         var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);

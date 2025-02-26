@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using System.Linq;
 using Core.Application.Dtos;
 using Core.Application.Feature.Posts.Queries;
 using Core.Application.Reponses;
@@ -49,8 +48,6 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
 
         TResponse<List<PostDto>> response = new()
         {
-            Success = true,
-            Data = allPosts,
             Pagination = new Pagination
             {
                 Page = request.Page,
@@ -58,6 +55,8 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
                 Total = total
             }
         };
+        response.SetIsSuccess(true);
+        response.SetData(allPosts);
         return response;
     }
 }

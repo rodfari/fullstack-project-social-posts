@@ -6,8 +6,14 @@ namespace Core.Domain.Contracts;
 public interface IGenericRepository<T> where T : DefaultEntity
 {
     Task<T> GetByIdAsync(int id);
-    Task<List<T>> GetAllAsync();
-    Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
+    Task<IEnumerable<T>> GetAllAsync();
+
+    /// <summary>
+    /// Get all entities that match the predicate
+    /// </summary>
+    /// <param name="predicate">An expression Entity, bool</param>
+    /// <returns>An awaitable list o entities</returns>
+    Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate);
     Task<T> AddAsync(T entity);
     Task UpdateAsync(T entity);
     Task DeleteAsync(int id);

@@ -2,7 +2,6 @@ using Core.Application.Reponses;
 using Core.Application.Reponses.PostsResponses;
 using Core.Domain.Contracts;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Core.Application.Feature.Posts.Commands.CreatePosts;
 public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResponse<CreatePostResponse>>
@@ -12,12 +11,12 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
     {
         _postsRepository = postsRepository;
     }
-    public async Task<TResponse<CreatePostResponse>> 
+    public async Task<TResponse<CreatePostResponse>>
     Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
         var validator = new CreatePostCommandValidator(_postsRepository);
         var validation = await validator.ValidateAsync(request);
-        
+
         if (validation.IsValid == false)
         {
             List<Error> errors = [];
@@ -27,11 +26,9 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
                 Code = x.ErrorCode,
                 Message = x.ErrorMessage
             }));
-            return new TResponse<CreatePostResponse>
-            {
-                Success = false,
-                Errors = errors
-            };
+            return new TResponse<CreatePostResponse>()
+            .SetIsSuccess(false)
+            .SetErrors(errors);
         }
 
         if (request.IsRepost)
@@ -52,15 +49,13 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
 
         await _postsRepository.AddAsync(newPost);
 
-        return new TResponse<CreatePostResponse>
+        return new TResponse<CreatePostResponse>()
+        .SetIsSuccess(true)
+        .SetData(new CreatePostResponse
         {
-            Success = true,
-            Data = new CreatePostResponse
-            {
-                PostId = newPost.Id,
-                UserId = newPost.UserId,
-                Content = newPost.Content,
-            }
-        };
+            PostId = newPost.Id,
+            UserId = newPost.UserId,
+            Content = newPost.Content,
+        });
     }
 }

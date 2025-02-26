@@ -102,7 +102,7 @@ public class PostsRepositoryTests
 
         // Act
         await repository.AddAsync(post);
-        var result = await repository.GetAllAsync(x => x.UserId == post.UserId);
+        var result = await repository.FilterAsync(x => x.UserId == post.UserId) as List<Posts>;
 
         // Assert
         result.ShouldNotBeNull();
@@ -136,7 +136,7 @@ public class PostsRepositoryTests
 
         // Act
         await repository.AddAsync(post);
-        var result = await repository.GetAllAsync(x => x.OriginalPostId == post.OriginalPostId);
+        var result = await repository.FilterAsync(x => x.OriginalPostId == post.OriginalPostId) as List<Posts>;
 
         // Assert
         result.ShouldNotBeNull();
@@ -170,7 +170,7 @@ public class PostsRepositoryTests
 
         // Act
         await repository.AddAsync(post);
-        var result = await repository.GetAllAsync(x => x.AuthorId == post.AuthorId);
+        var result = await repository.FilterAsync(x => x.AuthorId == post.AuthorId) as List<Posts>;
 
         // Assert
         result.ShouldNotBeNull();
@@ -210,7 +210,7 @@ public class PostsRepositoryTests
         }
 
         // Act
-        var result = await repository.GetAllAsync();
+        var result = await repository.GetAllAsync() as List<Posts>;
 
         // Assert
         result.ShouldNotBeNull();
