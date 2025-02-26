@@ -21,12 +21,12 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
         var query = _context.Posts
         .Where(predicate)
         .Include(p => p.User)
-        .Include(p => p.Author).DefaultIfEmpty()
-        .Include(p => p.Reposts).DefaultIfEmpty()
+        .Include(p => p.Author)
+        .Include(p => p.Reposts)
         .AsQueryable();
 
         //sort by trending
-        if (sort.Equals("trending"))
+        if ((string.IsNullOrEmpty(sort) || sort.Equals("trending")) && !string.IsNullOrEmpty(sort))
         {
             query = query.Where(x => !x.IsRepost).OrderByDescending(x => x.RepostCount);
         }

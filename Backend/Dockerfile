@@ -11,7 +11,7 @@ COPY Presentation/Api/Api.csproj Presentation/Api/
 COPY Infrastructure/Persistence/mySQL/mySQL.csproj Infrastructure/Persistence/mySQL/
 COPY Tests/Application/ApplicationTests.csproj Tests/Application/
 COPY Tests/Persistence/PersistenceTests.csproj Tests/Persistence/
-COPY Tests/Presentation/Api.csproj Tests/Presentation/
+COPY Tests/Presentation/ApiTests.csproj Tests/Presentation/
 
 # Restore dependencies
 RUN dotnet restore
@@ -34,4 +34,4 @@ COPY --from=build /app/out .
 EXPOSE 80
 
 # Set the entry point for the application
-ENTRYPOINT ["dotnet", "Consumer.dll"]
+ENTRYPOINT ["dotnet", "Api.dll"]

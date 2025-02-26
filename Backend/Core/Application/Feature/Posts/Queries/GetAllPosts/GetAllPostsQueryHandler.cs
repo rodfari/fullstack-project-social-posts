@@ -16,7 +16,7 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
     }
     public async Task<TResponse<List<PostDto>>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
     {
-        Expression<Func<Core.Domain.Entities.Posts, bool>>? predicate = null;
+        Expression<Func<Core.Domain.Entities.Posts, bool>> predicate = x => true;
 
         if (!string.IsNullOrEmpty(request.Keyword))
         {
@@ -29,7 +29,7 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
             request.Page,
             request.PageSize,
             request.Sort
-            );
+            ) as List<Core.Domain.Entities.Posts>;
         int total = await _postsRepository.CountAsync();
         
         List<PostDto> allPosts = [];

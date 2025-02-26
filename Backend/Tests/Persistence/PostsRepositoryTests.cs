@@ -242,6 +242,7 @@ public class PostsRepositoryTests : IClassFixture<PostsRepositoryFixture>
     [InlineData("FiltEr WoRd", 1, 10, "desc", 3)]
     [InlineData("", 1, 10, "desc", 10)]
     [InlineData("", 2, 10, "desc", 5)]
+    [InlineData("", 2, 10, "", 5)]
     public async Task GetAllAsync_With_Filter_Options(string keyword, int page, int pageSize, string sort, int expected)
     {
         // Arrange
