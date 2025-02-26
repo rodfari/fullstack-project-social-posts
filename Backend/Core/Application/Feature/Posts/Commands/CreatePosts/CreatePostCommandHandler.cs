@@ -1,3 +1,4 @@
+using AutoMapper;
 using Core.Application.Reponses;
 using Core.Application.Reponses.PostsResponses;
 using Core.Domain.Contracts;
@@ -7,9 +8,11 @@ namespace Core.Application.Feature.Posts.Commands.CreatePosts;
 public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResponse<CreatePostResponse>>
 {
     private readonly IPostsRepository _postsRepository;
-    public CreatePostCommandHandler(IPostsRepository postsRepository)
+    readonly IMapper _mapper;
+    public CreatePostCommandHandler(IPostsRepository postsRepository, IMapper mapper)
     {
         _postsRepository = postsRepository;
+        _mapper = mapper;
     }
     public async Task<TResponse<CreatePostResponse>>
     Handle(CreatePostCommand request, CancellationToken cancellationToken)
@@ -38,14 +41,9 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, TResp
             await _postsRepository.UpdateAsync(originalPost);
         }
 
-        var newPost = new Domain.Entities.Posts
-        {
-            UserId = request.UserId,
-            Content = request.Content,
-            AuthorId = request.AuthorId,
-            IsRepost = request.IsRepost,
-            OriginalPostId = request.OriginalPostId
-        };
+        
+
+        var newPost =  _mapper.Map<Domain.Entities.Posts>(request);
 
         await _postsRepository.AddAsync(newPost);
 

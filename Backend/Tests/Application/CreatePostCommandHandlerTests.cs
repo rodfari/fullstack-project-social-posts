@@ -1,5 +1,7 @@
 using System.Linq.Expressions;
+using Application.Mappings;
 using AutoFixture;
+using AutoMapper;
 using Core.Application.Feature.Posts.Commands.CreatePosts;
 using Core.Domain.Contracts;
 using Core.Domain.Entities;
@@ -29,13 +31,18 @@ namespace ApplicationTests;
 
 public class CreatePostCommandHandlerTests
 {
+    readonly IMapper mapper;
     public CreatePostCommandHandlerTests()
     {
+        this.mapper = new MapperConfiguration(conf => {
+            conf.AddProfile<PostMappings>();
+        }).CreateMapper();
     }
 
     [Fact]
     public async Task CreatePostUseCase_WhenPostIsValid_ShouldCreatePost()
     {
+
         // Arrange
         var _postRepositoryMock = new Mock<IPostsRepository>();
         var fixture = new Fixture();
@@ -54,7 +61,7 @@ public class CreatePostCommandHandlerTests
             .Setup(x => x.FilterAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
             .ReturnsAsync(new List<Posts>());
         // Act
-        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);
+        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object, mapper);
 
         var result = await handler.Handle(new CreatePostCommand
         {
@@ -90,7 +97,7 @@ public class CreatePostCommandHandlerTests
             .Setup(x => x.FilterAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
             .ReturnsAsync(new List<Posts>());
 
-        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);
+        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object, this.mapper);
 
         var createPostCmdFixture = new Fixture();
         createPostCmdFixture.Customize<CreatePostCommand>(
@@ -129,7 +136,7 @@ public class CreatePostCommandHandlerTests
             .Setup(x => x.FilterAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
             .ReturnsAsync(new List<Posts>());
 
-        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);
+        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object, this.mapper);
 
         var createPostCmdFixture = new Fixture();
         createPostCmdFixture.Customize<CreatePostCommand>(
@@ -166,7 +173,7 @@ public class CreatePostCommandHandlerTests
             .Setup(x => x.FilterAsync(It.IsAny<Expression<Func<Posts, bool>>>()))
             .ReturnsAsync(posts);
 
-        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object);
+        var handler = new CreatePostCommandHandler(_postRepositoryMock.Object, this.mapper);
 
         var createPostCmdFixture = new Fixture();
         createPostCmdFixture.Customize<CreatePostCommand>(

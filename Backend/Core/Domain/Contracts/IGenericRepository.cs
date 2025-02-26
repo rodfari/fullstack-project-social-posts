@@ -15,6 +15,7 @@ public interface IGenericRepository<T> where T : DefaultEntity
     /// <returns>An awaitable list o entities</returns>
     Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate);
     Task<T> AddAsync(T entity);
+    Task AddRangeAsync(IEnumerable<T> entities);
     Task UpdateAsync(T entity);
     Task DeleteAsync(int id);
     Task DeleteAsync(T Entity);

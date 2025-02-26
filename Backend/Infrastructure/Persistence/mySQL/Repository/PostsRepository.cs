@@ -16,16 +16,14 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
         return _context.Posts.CountAsync();
     }
 
-    public async Task<List<Posts>> GetAllAsync(Expression<Func<Posts, bool>>? predicate, int Page, int PageSize, string sort)
+    public async Task<IEnumerable<Posts>> LoadTimeLineAsync(Expression<Func<Posts, bool>> predicate, int Page, int PageSize, string sort)
     {
-        var query = _context.Posts.Include(p => p.User)
-            .Include(p => p.Author)
-            .Include(p => p.Reposts)
-            .AsQueryable();
-
-
-        if (predicate != null)
-            query = query.Where(predicate);
+        var query = _context.Posts
+        .Where(predicate)
+        .Include(p => p.User)
+        .Include(p => p.Author).DefaultIfEmpty()
+        .Include(p => p.Reposts).DefaultIfEmpty()
+        .AsQueryable();
 
         //sort by trending
         if (sort.Equals("trending"))
@@ -34,16 +32,12 @@ public class PostsRepository : GenericRepository<Posts>, IPostsRepository
         }
         else
         {
-            
             query = query.OrderByDescending(x => x.CreatedAt);
-            Console.WriteLine("\n\n\nsort by created at\n\n\n");
         }
-
 
         query = query.Skip((Page - 1) * PageSize).Take(PageSize);
 
-            return await query.AsNoTracking()
-                .ToListAsync();
+        return await query.AsNoTracking().ToListAsync();
     }
 
     public async Task<Posts> GetPostAndUserByIdAsync(int id)

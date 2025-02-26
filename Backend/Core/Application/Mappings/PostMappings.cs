@@ -1,5 +1,6 @@
 using AutoMapper;
 using Core.Application.Dtos;
+using Core.Application.Feature.Posts.Commands.CreatePosts;
 using Core.Domain.Entities;
 
 namespace Application.Mappings
@@ -10,6 +11,8 @@ namespace Application.Mappings
         {
             CreateMap<Posts, PostDto>();
             CreateMap<PostDto, Posts>();
+
+            CreateMap<CreatePostCommand, Posts>();
         }
     }
 }

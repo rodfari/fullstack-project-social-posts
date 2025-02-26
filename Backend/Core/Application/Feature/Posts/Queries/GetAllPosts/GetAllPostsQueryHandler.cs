@@ -24,7 +24,7 @@ public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, TRespon
         }
 
 
-        var posts = await _postsRepository.GetAllAsync(
+        var posts = await _postsRepository.LoadTimeLineAsync(
             predicate, 
             request.Page,
             request.PageSize,

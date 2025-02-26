@@ -21,6 +21,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : DefaultEntit
         return entity;
     }
 
+    public async Task AddRangeAsync(IEnumerable<T> entities)
+    {
+        _context.AddRange(entities);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task DeleteAsync(int id)
     {
         var refe = await _context.FindAsync<T>(id);
@@ -51,8 +57,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : DefaultEntit
             .AsNoTracking()
             .FirstOrDefaultAsync(x =>x.Id == id) ?? Activator.CreateInstance<T>();
     }
-
-
 
     public async Task UpdateAsync(T entity)
     {

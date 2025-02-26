@@ -48,7 +48,7 @@ public class CreatePostCommandValidator: AbstractValidator<CreatePostCommand>
             .MustAsync(async (x, cancellation) => 
             {
                 var repost = await postsRepository
-                .GetAllAsync(
+                .LoadTimeLineAsync(
                     p => p.UserId == x.UserId 
                     && p.OriginalPostId == x.OriginalPostId
                     && p.IsRepost == true,

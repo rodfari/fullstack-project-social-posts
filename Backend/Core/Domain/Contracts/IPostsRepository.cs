@@ -5,7 +5,7 @@ namespace Core.Domain.Contracts;
 public interface IPostsRepository: IGenericRepository<Posts>
 {
     Task<int> CountAsync();
-    Task<List<Posts>> GetAllAsync(
+    Task<IEnumerable<Posts>> LoadTimeLineAsync(
         Expression<Func<Posts, bool>>? predicate, 
         int Page,
         int PageSize,

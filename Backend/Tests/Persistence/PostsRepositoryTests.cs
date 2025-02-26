@@ -1,14 +1,25 @@
+using System.Linq.Expressions;
 using AutoFixture;
+using Core.Domain.Contracts;
 using Core.Domain.Entities;
 using Infrastructure.Persistence.mySQL;
 using Infrastructure.Persistence.mySQL.Repository;
 using Microsoft.EntityFrameworkCore;
+using PersistenceTests.Fixtures;
 using Shouldly;
 
 namespace PersistenceTests;
 
-public class PostsRepositoryTests
+public class PostsRepositoryTests : IClassFixture<PostsRepositoryFixture>
 {
+    PostsRepositoryFixture _fixture;
+    public PostsRepositoryTests(PostsRepositoryFixture fixture)
+    {
+
+
+        _fixture = fixture;
+    }
+
     [Fact]
     public async Task CreatePostAsync_ShouldCreatePost()
     {
@@ -227,70 +238,58 @@ public class PostsRepositoryTests
     }
 
     [Theory(DisplayName = "GetAllAsync_With_Filter_Options")]
-    [InlineData("", 1, 15, "desc", true)]
-    [InlineData("", 1, 15, "", false)]
-    [InlineData("Number: 5", 1, 15, "desc", false)]
-    [InlineData("Number: 55", 1, 15, "desc", false)]
-    [InlineData("", 0, 0, "", false)]
-    [InlineData("", 0, 0, "", true)]
-    public async Task GetAllAsync_With_Filter_Options(string keyword, int page, int pageSize, string sort, bool trending)
+    [InlineData("filter word", 1, 10, "desc", 3)]
+    [InlineData("FiltEr WoRd", 1, 10, "desc", 3)]
+    [InlineData("", 1, 10, "desc", 10)]
+    [InlineData("", 2, 10, "desc", 5)]
+    public async Task GetAllAsync_With_Filter_Options(string keyword, int page, int pageSize, string sort, int expected)
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<DataContext>()
-            .UseInMemoryDatabase(databaseName: "GetAllAsync_With_Filter_Options")
-            .Options;
-        var posts = PostFixture.Fixture_GetAllAsync_With_Filter_Options();
-        using var context = new DataContext(options);
-        await context.AddRangeAsync(posts);
-        await context.SaveChangesAsync();
+        _fixture
+        .InitDataContext()
+        .setUser()
+        .SetContent(12)
+        .SetContentWithMatchWord(3);
+
+        IPostsRepository postsRepository = new PostsRepository(_fixture.DataContext);
         
-        var query = context.Posts as IQueryable<Posts>;
-        //filter by keyword
+        //Act
+        Expression<Func<Posts, bool>> condition = x => true;
+
         if (!string.IsNullOrEmpty(keyword))
-        {
-            query = query.Where(x => x.Content.Contains(keyword));
-        }
+            condition = x => x.Content.ToLower().Contains(keyword.ToLower());
 
-        //sort by trending
-        if (trending)
-        {
-            query = query.OrderByDescending(x => x.RepostCount).ThenByDescending(x => x.CreatedAt);
-        }
-        else
-        {
-            query = sort switch
-            {
-                "asc" => query.OrderBy(x => x.CreatedAt),
-                "desc" => query.OrderByDescending(x => x.CreatedAt),
-                _ => query.OrderByDescending(x => x.CreatedAt)
-            };
-        }
-        int postsCount = await query.CountAsync();
-        //paginate
-        query = query.Skip((page - 1) * pageSize).Take(pageSize);
-
-        // Act
-        var result = await query.ToListAsync();
+        var result = await postsRepository.LoadTimeLineAsync(condition, page, pageSize, "desc") as List<Posts>;
 
         //assert
         result.ShouldNotBeNull();
         result.ShouldBeOfType<List<Posts>>();
+        result.Count.ShouldBe(expected);
+    }
+
+    [Fact]
+    public async Task ShouldReturnOrderedByTrending()
+    {
+        // Arrange
+        _fixture
+        .InitDataContext()
+        .setUser()
+        .SetContent(12)
+        .setTrendingPost();
         
-        if(postsCount >= pageSize)
-            result.Count.ShouldBe(pageSize);
+        IPostsRepository postsRepository = new PostsRepository(_fixture.DataContext);
+        
+        //Act
+        var allPosts = await postsRepository.GetAllAsync();
+        var result = await postsRepository.LoadTimeLineAsync(x => true, 1, 10, "trending") as List<Posts>;
 
-        if (string.IsNullOrEmpty(keyword) && string.IsNullOrEmpty(sort) && !trending)
-        {
-            for (int i = 0; i < result.Count - 1; i++)
-            {
-                result[i].CreatedAt.ShouldBeGreaterThanOrEqualTo(result[i + 1].CreatedAt);
-            }
-        }
-
-        if (!string.IsNullOrEmpty(keyword))
-        {
-            result.ShouldContain(x => x.Content.Contains(keyword));
-        }
+        //assert
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<List<Posts>>();
+        result.Count.ShouldBe(10);
+        result[0].Content.ShouldBe("this is a trending post");
+        result[1].Content.ShouldNotBe("this is a trending post");
 
     }
+        
 }
